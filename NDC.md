@@ -4,13 +4,20 @@
 → chaque contributeur ne contribue pas forcément à chaque type de ressources et chaque ressource a au moins 1 contributeur (*—1..n) 
 
 Classes filles de Ressource =
+
 **Livre** : ISBN, résumé, langue
+
 **Film** : langue, longueur, synopsis
+
 **Oeuvre musicale** : longueur
+
 → ce sont des classes filles exclusives de Ressources
 
+
 **Contributeur** : nom, prénom, date de naissance, nationalité
+
 **Membre_personnel** : compte utilisateur login, compte utilisateur mdp, nom, prénom, date de naissance, rue, ville, code postal, adresse mail
+
 **Adhérent** : compte utilisateur login, compte utilisateur mdp, nom, prénom, date de naissance, rue, ville, code postal, adresse mail, téléphone
 → emprunte une ou plusieurs ressources (association n — n) ATTENTION nombre limité et pour une durée limitée
 → pour tenir compte des adhérences passées : on ajoute un booléen « actif » qui permet de dire au système s’il est encore adhérent et permet ainsi de ne pas le supprimer de la base de données

@@ -68,9 +68,9 @@ Ressource <|-- Livre
 Ressource <|-- Film
 Ressource <|-- OeuvreMusicale
 
-
-Adherent "*" -- "*" Ressource
-(Adherent,Ressource) .. Emprunt
+Exemplaire "*" -- "1" Ressource : appartient
+Adherent "*" -- "*" Exemplaire
+(Adherent,Exemplaire) .. Emprunt
 
 MembrePersonnel "*" -- "*" Emprunt : gère >
 

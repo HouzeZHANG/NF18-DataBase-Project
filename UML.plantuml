@@ -1,0 +1,95 @@
+@startuml
+abstract class Ressource{
+  code:Integer
+  titre:String
+  date_apparition:Date
+  editeur:String
+  genre:String
+  code_classification:String
+  etat:{neuf,bon,abîmé,perdu}
+}
+
+
+together {
+  class Livre{
+  ISBN:String
+  resume:String
+  langue:String
+}
+
+class Film{
+  langue:String
+  longueur:Integer
+  synopsis:String
+}
+
+class OeuvreMusicale{
+  longueur:Integer
+}
+}
+
+
+class MembrePersonnel{
+  login:String
+  mdp:String
+  nom:String
+  prenom:String
+  code_postal:String
+  adresse_rue:String
+  ville:String
+  addresse_mail:String
+}
+
+class Adherent{
+  login:String
+  mdp:String
+  nom:String
+  prenom:String
+  date_naissance:Date
+  code_postal:String
+  adresse_rue:String
+  ville:String
+  addresse_mail:String
+  num_tel:Integer
+  actif:Bool
+  droit_emprunt:Bool
+}
+
+class Contributeur{
+  nom:String
+  prenom:String
+  date_naissance:Date
+  nationalite:String
+}
+
+skinparam groupInheritance 2
+
+Ressource <|-- Livre
+Ressource <|-- Film
+Ressource <|-- OeuvreMusicale
+
+
+Adherent "*" -- "*" Ressource
+(Adherent,Ressource) .. Emprunt
+
+MembrePersonnel "*" -- "*" Emprunt : gère >
+
+
+Contributeur "1..n" -up- "*" Livre : est l'auteur du >
+Contributeur "1..n" -up- "*" Film : est réalisateur du >
+Contributeur "1..n" -up- "*" Film : est acteur dans >
+Contributeur "1..n" -up- "*" OeuvreMusicale : compose une >
+Contributeur "1..n" -up- "*" OeuvreMusicale : interprète une >
+
+
+
+class Emprunt{
+  date_pret:Date
+  duree_pret:Time
+}
+
+
+
+
+
+@enduml

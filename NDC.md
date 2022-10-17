@@ -33,6 +33,7 @@
 
 → est classe mère de Oeuvre musicale, Film et Livre
 
+→ Cet héritage sera explicité dans le modèle relationnel comme un héritage par les classes filles car c'est un héritage exclusif. Ainsi, chaque classe fille héritera de la classe mère la clé et ses attributs. Les clés primaires ne sont donc pas retenues comme clé primaire.
 
 
 **Livre** : ISBN, résumé, langue
@@ -76,6 +77,8 @@
 **Sanction** : 
 
 → est associée à un ou plusieurs Emprunts (1 - 0...n)
+→ Cet héritage sera explicité dans le modèle relationnel comme un héritage par les classes filles car c'est un héritage exclusif. Ainsi, chaque classe fille héritera de la classe mère la clé et ses attributs. Les clés primaires ne sont donc pas retenues comme clé primaire.
+
 
 
 

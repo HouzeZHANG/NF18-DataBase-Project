@@ -27,13 +27,11 @@
 **Liste des objets, associations et contraintes**
 
 
-**Ressource** : code {key}, titre (NOT NULL), date d’apparition, éditeur, genre, code de classification (NOT NULL)
+**Ressource** : code {key}, titre (NOT NULL), date d’apparition, éditeur, genre (NOT NULL), code de classification (NOT NULL)
 
-→ est disponible en 1 Exemplaire (1 - 0...n)
+→ est disponible en un ou plusieurs Exemplaire (1 - 1...n)
 
 → est classe mère de Oeuvre musicale, Film et Livre
-
-→ Cet héritage sera explicité dans le modèle relationnel comme un héritage par les classes filles car c'est un héritage exclusif. Ainsi, chaque classe fille héritera de la classe mère la clé et ses attributs. Les clés primaires ne sont donc pas retenues comme clé primaire.
 
 
 **Livre** : ISBN {key}, résumé, langue
@@ -50,6 +48,8 @@
 
 → classe fille exclusive de Ressource
 
+→ Cet héritage sera explicité dans le modèle relationnel comme un héritage par les classes filles car c'est un héritage exclusif. Ainsi, chaque classe fille héritera de la classe mère la clé et ses attributs. Les clés primaires ne sont donc pas retenues comme clé primaire.
+
 
 
 **Contributeur** : nom (NOT NULL), prénom (NOT NULL), date de naissance, nationalité
@@ -64,30 +64,29 @@
 
 → est auteur d'un Livre(1...n - 0...n) 
 
+→ un Contributeur contribue au moins une fois et il peut contribuer sur plusieurs Ressources et plusieurs fois dans des rôles différents sur une même Ressource. 
+
 
 
 **Membre du personnel** : compte utilisateur login {key}, compte utilisateur mdp (NOT NULL), nom (NOT NULL), prénom (NOT NULL), date de naissance, rue, ville, code postal, adresse mail (NOT NULL)
 
-→ gère les Emprunts (0...n - 0...n)
+→ gère les Emprunts (1 - 0...n)
 
-→ gère les Sanctions (0...n - 0...n) 
+→ gère les Sanctions (1 - 0...n) 
 
 
 
 **Sanction** : 
 
-→ est associée à un ou plusieurs Emprunts (1 - 0...n)
-
-→ Cet héritage sera explicité dans le modèle relationnel comme un héritage par les classes filles car c'est un héritage exclusif. Ainsi, chaque classe fille héritera de la classe mère la clé et ses attributs. Les clés primaires ne sont donc pas retenues comme clé primaire.
+→ peut être associée à un ou plusieurs Emprunts (1 - 0...n)
 
 
-
-
-**Retard** :  retour (0 ou 1)
+**Retard** :  fin (0 ou 1)
 
 → classe fille exclusive de Sanction
-→ Méthode : retour = date du jour >= date de rendu + durée du retard 
-→ 
+
+→ Méthode : fin = date du jour < date de rendu + durée du retard, date de rendu et durée du retard proviennent de la classe Emprunt.
+
 
 
 **Détérioration** : remboursement (0 ou 1)
@@ -96,17 +95,18 @@
 
 → remboursement est un booléen qui indique si l'Exemplaire a été remboursé
 
+→ Cet héritage sera explicité dans le modèle relationnel comme un héritage par les classes filles car c'est un héritage exclusif. Ainsi, chaque classe fille héritera de la classe mère la clé et ses attributs. Les clés primaires ne sont donc pas retenues comme clé primaire.
 
 
-**Adhérent** : compte utilisateur login {key}, compte utilisateur mdp (NOT NULL), nom (NOT NULL), prénom (NOT NULL), date de naissance, rue, ville, code postal, adresse mail (NOT NULL), téléphone (NOT NULL), droit à l'emprunt (0 ou 1), actif (0 ou 1), nombre d'emprunts (>=0 et <=n, n limite d'emprunts)
+**Adhérent** : compte utilisateur login {key}, compte utilisateur mdp (NOT NULL), nom (NOT NULL), prénom (NOT NULL), date de naissance, rue, ville, code postal, adresse mail (NOT NULL), téléphone (NOT NULL), droit à l'emprunt (0 ou 1), actif (0 ou 1)
 
 → peut emprunter un ou plusieurs Exemplaires (0...n — 0...n)
 
-→ le nombre d'emprunts est limité et il est déterminé à l'aide de la classe Emprunt
+→ le nombre d'emprunts est limité et il est calculé dans une requête à l'aide de la classe Emprunt, cela apparaîtra dans l'application.
 
 → pour tenir compte des adhérences passées : on ajoute un booléen « actif » qui permet de dire au système s’il est encore adhérent (1) et permet ainsi de ne pas le supprimer de la base de données. Si actif vaut 0, cela signfie que soit l'Adhérent est inactif soit l'Adhérent est blacklisté.
 
-→ pour interdire les emprunts, on choisit de mettre un autre booléen « droit_emprunt ». Si cet Adhérent est associé à une Sanction, alors droit d'emprunt prendra la valeur 0.
+→ pour interdire les emprunts, on choisit de mettre un autre booléen « droit_emprunt ». Si cet Adhérent est associé à une Sanction de valeur 1, alors droit d'emprunt prendra la valeur 0.
 
 
 

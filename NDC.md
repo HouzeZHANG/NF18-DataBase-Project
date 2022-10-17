@@ -13,29 +13,41 @@
 **Film** : langue, longueur, synopsis
 → classe fille exclusive de Ressource
 
-**Oeuvre musicale** : longueur
+**OeuvreMusicale** : longueur
 → classe fille exclusive de Ressource
 
 
 **Contributeur** : nom, prénom, date de naissance, nationalité
-→ chaque contributeur ne contribue pas forcément à chaque type de ressources et chaque ressource a au moins 1 contributeur (*—1..n) 
+→ compose une OeuvreMusicale(1..* - *)
+→ interprète une OeuvreMusicale(1..* - *) 
+→ réalise un Film(1..* - *) 
+→ est acteur d'un Film(1..* - *) 
+→ est auteur d'un Livre(1..* - *) 
 
 **Membre_personnel** : compte utilisateur login, compte utilisateur mdp, nom, prénom, date de naissance, rue, ville, code postal, adresse mail
+→ gère les Emprunts (* - *)
+→ gère les Sanctions (* - *) 
 
-**Adhérent** : compte utilisateur login, compte utilisateur mdp, nom, prénom, date de naissance, rue, ville, code postal, adresse mail, téléphone
-→ emprunte une ou plusieurs ressources (association n — n) ATTENTION nombre limité et pour une durée limitée
+**Sanction** : 
+→ est associée à un ou plusieurs Emprunts (1 - *)
+
+**Retard** : durée du retard
+→ classe fille exclusive de Sanction
+
+**Détérioration** : droit
+→ classe fille exclusive de Sanction
+
+**Adhérent** : compte utilisateur login, compte utilisateur mdp, nom, prénom, date de naissance, rue, ville, code postal, adresse mail, téléphone, droit à l'emprunt, actif, nombre d'emprunts
+→ emprunte un ou plusieurs Exemplaire (* — *)
+→ le nombre d'emprunts est limité
 → pour tenir compte des adhérences passées : on ajoute un booléen « actif » qui permet de dire au système s’il est encore adhérent et permet ainsi de ne pas le supprimer de la base de données
-→  pour interdire les emprunts, on choisit de mettre un autre booléen « droit_emprunt » 
+→ pour interdire les emprunts, on choisit de mettre un autre booléen « droit_emprunt » 
 
-**Prêt** : date_prêt, durée_prêt
-⇒ classe association entre adhérent et exemplaire
+**Emprunt** : date de prêt, durée de prêt
+⇒ classe d'association entre Adhérent et Exemplaire
+→ la durée de prêt est limitée
 
-**Exemplaire** : état
+**Exemplaire** : état, disponible
+→ appartient à une Ressource (* - 1)
 → l’exemplaire peut être neuf, en bon état, abîmé ou perdu
-
-Contraintes :
-- document ne peut être emprunté que si disponible et au minimum en bon état
-- adhérent ne peut emprunter qu’un nombre limité de documents 
-- sanctions si retour en retard ⇒ suspension du même nombre de jour que le retard (booléen droit_emprunt)
-- sanctions si perte ou dégradation grave ⇒ suspension tant que le document n’est pas remboursé (booléen droit_emprunt)
-- possibilité de blacklister adhérents en cas de sanctions répétées (booléen actif)
+→ disponible est un booléen

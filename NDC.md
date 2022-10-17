@@ -3,7 +3,7 @@
 **Préambule**
 
 
-**Client :**(Bibliothèque municipale), M. Alessandro Victorino 
+**Client :** M. Alessandro Victorino 
 
 **Livrables :**
 

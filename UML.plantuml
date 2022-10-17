@@ -27,7 +27,10 @@ class OeuvreMusicale{
   longueur:Integer
 }
 }
-
+skinparam groupInheritance 2
+Ressource <|-- Livre
+Ressource <|-- Film
+Ressource <|-- OeuvreMusicale
 
 class MembrePersonnel{
   login:String
@@ -62,16 +65,33 @@ class Contributeur{
   nationalite:String
 }
 
-skinparam groupInheritance 2
 
-Ressource <|-- Livre
-Ressource <|-- Film
-Ressource <|-- OeuvreMusicale
+class Emprunt{
+  date_pret:Date
+  duree_pret:Time
+}
+
+abstract class Sanction{
+}
+
+together {
+  class Retard{
+    duree_retard :Integer
+  }
+  class Déterioration{
+    remboursement : Bool
+  }
+}
+
+skinparam groupInheritance 2
+Sanction <|-- Retard
+Sanction <|-- Déterioration
 
 
 Exemplaire "*" -- "1" Ressource : appartient
 Adherent "*" -- "*" Exemplaire
 (Adherent,Exemplaire) .. Emprunt
+Emprunt "*" -- "1" Sanction
 
 MembrePersonnel "*" -- "*" Emprunt : gère >
 
@@ -84,10 +104,7 @@ Contributeur "1..n" -up- "*" OeuvreMusicale : interprète une >
 
 
 
-class Emprunt{
-  date_pret:Date
-  duree_pret:Time
-}
+
 
 
 

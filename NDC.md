@@ -1,8 +1,9 @@
 # NDC - sujet Bibliothèque
 
 **Préambule**
-*Client :* (Bibliothèque municipale), M. Alessandro Victorino 
-*Livrables : *
+
+**Client : **(Bibliothèque municipale), M. Alessandro Victorino 
+**Livrables : **
 → README (avec le sujet du projet et les noms des membres du groupe) lors de la création du Gitlab du projet
 → NDC + première version du MCD : date du TD de la semaine 7 + 2 jours avant 23h59
 → MCD corrigé + première version du MLD : date du TD de la semaine 9 + 2 jours avant 23h59
@@ -13,6 +14,7 @@
 
 
 **Liste des objets, associations et contraintes**
+
 **Ressource** (classe mère abstraite) : code (clé), titre, date d’apparition, éditeur, genre, code de classification
 → est disponible en 1 Exemplaire (1 - *)
 → est classe mère de Oeuvre musicale, Film et Livre
@@ -63,8 +65,10 @@
 
 
 **Description des utilisateurs**
+
 Les administrateurs de la base de données, qui sont les Membres du personnel , gèrent les emprunts, les sanctions, ajoutent des documents, des exemplaires, modifient des descriptions. Les utilisateurs, qui sont les Adhérents, peuvent avoir acccès à leurs données et aux documents.
 
 
 **Requêtes statistiques**
+
 Il faut aussi être capable de forunir des statistiques sur les documents empruntés par les utilisateurs, pour que les administrateurs puissent établir la liste des documents populaires et étudier le profil des utilisateurs pour suggérer des documents.

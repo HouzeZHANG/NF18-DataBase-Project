@@ -1,20 +1,24 @@
 # NDC - sujet Bibliothèque
 
-**Ressource** (classe mère abstraite) : code (clé), titre, date d’apparition, éditeur, genre, code de classification
-→ chaque contributeur ne contribue pas forcément à chaque type de ressources et chaque ressource a au moins 1 contributeur (*—1..n) 
 
-Classes filles de Ressource =
+
+**Ressource** (classe mère abstraite) : code (clé), titre, date d’apparition, éditeur, genre, code de classification
+→ est disponible en 1 Exemplaire (1 - *)
+→ est classe mère de Oeuvre musicale, Film et Livre
+
 
 **Livre** : ISBN, résumé, langue
+→ classe fille exclusive de Ressource
 
 **Film** : langue, longueur, synopsis
+→ classe fille exclusive de Ressource
 
 **Oeuvre musicale** : longueur
-
-→ ce sont des classes filles exclusives de Ressources
+→ classe fille exclusive de Ressource
 
 
 **Contributeur** : nom, prénom, date de naissance, nationalité
+→ chaque contributeur ne contribue pas forcément à chaque type de ressources et chaque ressource a au moins 1 contributeur (*—1..n) 
 
 **Membre_personnel** : compte utilisateur login, compte utilisateur mdp, nom, prénom, date de naissance, rue, ville, code postal, adresse mail
 

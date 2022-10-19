@@ -20,6 +20,12 @@ Emprunt(#id : int, exemplaire⇒Exemplaire, date_pret: date, date_retour : date,
 → deterioration OR retard
 Emprunter(#adherent⇒Adherent, #emprunt⇒Emprunt)
 
+Composer(#contrib⇒Contributeur, #code⇒OeuvreMusicale)
+Interpréter(#contrib⇒Contributeur, #code⇒OeuvreMusicale.code)
+Réaliser(#contrib⇒Contributeur, #code⇒Film.code)
+Acteur(#contrib⇒Contributeur, #code⇒Film.code)
+Auteur(#contrib⇒Contributeur, #code⇒Livre.code)
+
 
 Transformations d’héritage :
 Ressourse - transformation par classes filles 
@@ -31,11 +37,7 @@ Livre(#code: varchar, titre: varchar, date_apparition: date, editeur: varchar, g
 → titre, genre, code_classification NOT NULL
 → ISBN unique NOT NULL
 
-Composer(#contrib⇒Contributeur, #code⇒OeuvreMusicale)
-Interpréter(#contrib⇒Contributeur, #code⇒OeuvreMusicale.code)
-Réaliser(#contrib⇒Contributeur, #code⇒Film.code)
-Acteur(#contrib⇒Contributeur, #code⇒Film.code)
-Auteur(#contrib⇒Contributeur, #code⇒Livre.code)
+
 
 
 

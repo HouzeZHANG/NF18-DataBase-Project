@@ -69,7 +69,7 @@
  
  
  
-**Membre du personnel** : compte utilisateur login {key}, compte utilisateur mdp (NOT NULL), nom (NOT NULL), prénom (NOT NULL), date de naissance, rue, ville, code postal, adresse mail (NOT NULL)
+**Membre du personnel** : compte utilisateur login {key}, compte utilisateur mdp (NOT NULL), nom (NOT NULL), prénom (NOT NULL), rue, ville, code postal, adresse mail (NOT NULL)
  
 → gère les Emprunts (1 - 0...n) 
  
@@ -88,7 +88,7 @@
  
 → classe fille exclusive de Sanction
  
-→ Méthode : fin = date du jour < date de rendu + durée du retard, date de rendu et durée du retard proviennent de la classe Emprunt.
+→ Méthode : fin = date du jour < date de rendu + (date de rendu - date de retour), date de rendu, date de retour et date de rendu proviennent de la classe Emprunt.
  
  
  
@@ -114,7 +114,7 @@
  
  
  
-**Emprunt** : date de prêt (NOT NULL), date de retour (NOT NULL), date de rendu (> date de prêt), durée du retard
+**Emprunt** : date de prêt (NOT NULL), date de retour (NOT NULL), date de rendu (> date de prêt)
  
  
 → la date de prêt peut être ultérieure à la date du jour en cas de réservation
@@ -123,7 +123,6 @@
  
 → la date de rendu est la date à laquelle l'Exemplaire a été rendu
  
-→ Méthode : durée du retard = date de rendu - date de retour, si durée du retard > 0, droit d'emprunt de l'Adhérent est désactivé du temps de la durée du retard
  
  
  

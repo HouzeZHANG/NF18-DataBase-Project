@@ -79,7 +79,8 @@
  
 **Sanction** :
  
-→ peut être associée à un ou plusieurs Emprunts (0...1 - 0...n)
+→ peut être associée à un ou plusieurs Emprunts (0...1 - 0...n)  
+
 → est classe mère de Retard et Détérioration
  
  

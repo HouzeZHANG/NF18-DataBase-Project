@@ -6,7 +6,6 @@ abstract class Ressource{
   editeur:String
   genre:String
   code_classification:String
-  etat:{neuf,bon,abîmé,perdu}
 }
 
 
@@ -65,10 +64,15 @@ class Contributeur{
   nationalite:String
 }
 
+class Exemplaire{
+  etat:{neuf,bon,abîmé,perdu}
+}
+
 
 class Emprunt{
   date_pret:Date
   duree_pret:Time
+  duree_retard():Time
 }
 
 abstract class Sanction{
@@ -77,6 +81,7 @@ abstract class Sanction{
 together {
   class Retard{
     duree_retard :Integer
+    fin():Bool
   }
   class Déterioration{
     remboursement : Bool
@@ -93,7 +98,8 @@ Adherent "*" -- "*" Exemplaire
 (Adherent,Exemplaire) .. Emprunt
 Emprunt "*" -- "1" Sanction
 
-MembrePersonnel "*" -- "*" Emprunt : gère >
+MembrePersonnel "1" -- "*" Emprunt : gère >
+MembrePersonnel "1" -- "*" Sanction : gère >
 
 
 Contributeur "1..n" -up- "*" Livre : est l'auteur du >

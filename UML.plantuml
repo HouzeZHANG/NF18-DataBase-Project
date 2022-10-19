@@ -1,6 +1,6 @@
 @startuml
 abstract class Ressource{
-  code:Integer
+  code:Integer {key}
   titre:String
   date_apparition:Date
   editeur:String
@@ -11,19 +11,19 @@ abstract class Ressource{
 
 together {
   class Livre{
-  ISBN:String
+  ISBN:String {key}
   resume:String
   langue:String
 }
 
 class Film{
   langue:String
-  longueur:Integer
+  longueur:Time
   synopsis:String
 }
 
 class OeuvreMusicale{
-  longueur:Integer
+  longueur:Time
 }
 }
 skinparam groupInheritance 2
@@ -32,7 +32,7 @@ Ressource <|-- Film
 Ressource <|-- OeuvreMusicale
 
 class MembrePersonnel{
-  login:String
+  login:String {key}
   mdp:String
   nom:String
   prenom:String
@@ -43,7 +43,7 @@ class MembrePersonnel{
 }
 
 class Adherent{
-  login:String
+  login:String {key}
   mdp:String
   nom:String
   prenom:String
@@ -52,7 +52,7 @@ class Adherent{
   adresse_rue:String
   ville:String
   addresse_mail:String
-  num_tel:Integer
+  num_tel:String
   actif:Bool
   droit_emprunt:Bool
 }
@@ -66,13 +66,14 @@ class Contributeur{
 
 class Exemplaire{
   etat:{neuf,bon,abîmé,perdu}
+  disponible:Bool
 }
 
 
 class Emprunt{
   date_pret:Date
-  duree_pret:Time
-  duree_retard():Time
+  date_retour:Date
+  date_rendu:Date
 }
 
 abstract class Sanction{
@@ -80,7 +81,6 @@ abstract class Sanction{
 
 together {
   class Retard{
-    duree_retard :Integer
     fin():Bool
   }
   class Déterioration{
@@ -93,10 +93,8 @@ Sanction <|-- Retard
 Sanction <|-- Déterioration
 
 
-Exemplaire "*" -- "1" Ressource : appartient
-Adherent "*" -- "*" Exemplaire
-(Adherent,Exemplaire) .. Emprunt
-Emprunt "*" -- "1" Sanction
+Exemplaire "1..n" -- "1" Ressource : appartient >
+Emprunt "*" -- "0..1" Sanction
 
 MembrePersonnel "1" -- "*" Emprunt : gère >
 MembrePersonnel "1" -- "*" Sanction : gère >
@@ -108,12 +106,12 @@ Contributeur "1..n" -up- "*" Film : est acteur dans >
 Contributeur "1..n" -up- "*" OeuvreMusicale : compose une >
 Contributeur "1..n" -up- "*" OeuvreMusicale : interprète une >
 
-
-
-
-
+Adherent "*" -- "*" Emprunt : effectuer >
+Emprunt "*" -- "1" Exemplaire : nécessite >
 
 
 
 
 @enduml
+
+

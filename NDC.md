@@ -119,7 +119,7 @@
  
 → la date de prêt peut être ultérieure à la date du jour en cas de réservation
  
-→ la date de prêt est la date à laquelle l'Exemplaire doit être rendu
+→ la date de retour est la date à laquelle l'Exemplaire doit être rendu
  
 → la date de rendu est la date à laquelle l'Exemplaire a été rendu
  

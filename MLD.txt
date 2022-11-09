@@ -1,3 +1,12 @@
+Justification choix des transformations des héritages 
+
+(Ressource - OeuvreMusicale|Film|Livre) :
+Cet héritage sera explicité dans le modèle relationnel comme un héritage par les classes filles car c'est un héritage exclusif. Ainsi, chaque classe fille héritera de la classe mère la clé et ses attributs. Les clés primaires des classes filles ne sont donc pas retenues comme clé primaire.
+
+(Sanction - Retard|Détérioration) :
+Cet héritage sera explicité dans le modèle relationnel comme un héritage par les classes filles car c'est un héritage exclusif. Ainsi, chaque classe fille héritera de la classe mère la clé et ses attributs. Les clés primaires des classes filles ne sont donc pas retenues comme clé primaire.
+
+
 Classes :
 Adherent(#login: varchar, mdp:varchar, nom: varchar, prenom: varchar, date_naissance: date, code_postal: varchar, adresse_rue: varchar, ville: varchar, adresse_mail: varchar,num_tel: varchar, actif: bool, droit_emprunt: bool)
 → avec mdp, nom, prenom, adresse_mail et num_tel NOT NULL

@@ -94,7 +94,7 @@ Sanction <|-- Déterioration
 
 
 Exemplaire "1..n" -- "1" Ressource : appartient >
-Emprunt "*" -- "0..1" Sanction
+Emprunt "*" -- "0..1" Sanction : avoir >
 
 MembrePersonnel "1" -- "*" Emprunt : gère >
 MembrePersonnel "1" -- "*" Sanction : gère >

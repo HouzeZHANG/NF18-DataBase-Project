@@ -27,9 +27,9 @@ Exemplaire(#id: int, etat : {neuf, bon, abîmé, perdu}, disponible :  bool, cod
 - code_oeuvre OR code_film OR code_livre (dû à la transformation d’héritage par classes filles)
 
 Contraintes :
-PROJECTION(Exemplaire, code_oeuvre) = PROJECTION(OeuvreMusicale, code) OR
-PROJECTION(Exemplaire, code_film) = PROJECTION(Film, code) OR
-PROJECTION(Exemplaire, code_livre) = PROJECTION(Livre, code)
+- PROJECTION(Exemplaire, code_oeuvre) = PROJECTION(OeuvreMusicale, code) OR
+- PROJECTION(Exemplaire, code_film) = PROJECTION(Film, code) OR
+- PROJECTION(Exemplaire, code_livre) = PROJECTION(Livre, code)
 
 ## Contributeur
 Contributeur(#nom: varchar, #prenom: varchar, date_naissance: date, nationalite: varchar)
@@ -45,10 +45,10 @@ Emprunt(#id : int, exemplaire⇒Exemplaire, date_pret: date, date_retour : date,
 - deterioration OR retard
 
 Contraintes :
-PROJECTION(Emprunt, personnel) = PROJECTION(MembrePersonnel, login)
-PROJECTION(Emprunt, exemplaire) = PROJECTION(Exemplaire, id)
-PROJECTION(Emprunt, retard) = PROJECTION(Retard, id)
-PROJECTION(Emprunt, deterioration) = PROJECTION(Deterioration, id)
+- PROJECTION(Emprunt, personnel) = PROJECTION(MembrePersonnel, login)
+- PROJECTION(Emprunt, exemplaire) = PROJECTION(Exemplaire, id)
+- PROJECTION(Emprunt, retard) = PROJECTION(Retard, id)
+- PROJECTION(Emprunt, deterioration) = PROJECTION(Deterioration, id)
 
 ## Emprunter
 Emprunter(#adherent⇒Adherent, #emprunt⇒Emprunt)
@@ -77,16 +77,7 @@ Auteur(#contrib⇒Contributeur, #code⇒Livre.code)
 - avec (contrib, code) UNIQUE
 
 Contraintes :
-INTERSECTION(Projection(Auteur, contrib), Projection(Acteur, contrib)) UNION 
-INTERSECTION(Projection(Auteur, contrib), Projection(Réaliser, contrib)) UNION
-INTERSECTION(Projection(Auteur, contrib), Projection(Interpréter, contrib)) UNION
-INTERSECTION(Projection(Auteur, contrib), Projection(Composer, contrib)) UNION 
-INTERSECTION(Projection(Acteur, contrib), Projection(Réaliser, contrib)) UNION
-INTERSECTION(Projection(Acteur, contrib), Projection(Interpréter, contrib)) UNION 
-INTERSECTION(Projection(Acteur, contrib), Projection(Composer, contrib)) UNION 
-INTERSECTION(Projection(Réaliser, contrib), Projection(Interpréter, contrib)) UNION
-INTERSECTION(Projection(Réaliser, contrib), Projection(Composer, contrib)) UNION
-INTERSECTION(Projection(Interpréter, contrib), Projection(Composer, contrib)) NULL OR NOT NULL, i.e. un contributeur peut contribuer plusieurs fois sur une même oeuvre avec des actions différentes.
+- INTERSECTION(Projection(Auteur, contrib), Projection(Acteur, contrib)) UNION INTERSECTION(Projection(Auteur, contrib), Projection(Réaliser, contrib)) UNION INTERSECTION(Projection(Auteur, contrib), Projection(Interpréter, contrib)) UNION INTERSECTION(Projection(Auteur, contrib), Projection(Composer, contrib)) UNION INTERSECTION(Projection(Acteur, contrib), Projection(Réaliser, contrib)) UNION INTERSECTION(Projection(Acteur, contrib), Projection(Interpréter, contrib)) UNION INTERSECTION(Projection(Acteur, contrib), Projection(Composer, contrib)) UNION INTERSECTION(Projection(Réaliser, contrib), Projection(Interpréter, contrib)) UNION INTERSECTION(Projection(Réaliser, contrib), Projection(Composer, contrib)) UNION INTERSECTION(Projection(Interpréter, contrib), Projection(Composer, contrib)) NULL OR NOT NULL, i.e. un contributeur peut contribuer plusieurs fois sur une même oeuvre avec des actions différentes.
 
 # 4. Transformations d’héritage
 
@@ -107,9 +98,7 @@ Livre(#code: varchar, titre: varchar, date_apparition: date, editeur: varchar, g
 - ISBN unique NOT NULL
 
 Contraintes:
-INTERSECTION(Projection(OeuvreMusicale, code), Projection(Film, code)) UNION 
-INTERSECTION(Projection(Film, code), Projection(Livre, code)) UNION
-INTERSECTION(Projection(Livre, code), Projection(OeuvreMusicale, code)) UNION = {}
+- INTERSECTION(Projection(OeuvreMusicale, code), Projection(Film, code)) UNION INTERSECTION(Projection(Film, code), Projection(Livre, code)) UNION INTERSECTION(Projection(Livre, code), Projection(OeuvreMusicale, code)) UNION = {}
 
 # Sanction - transformation par classes filles
 
@@ -121,6 +110,6 @@ Retard(#id : int, personnel⇒MembrePersonnel, fin : bool)
 Deterioration(#id : int, remboursement : bool, personnel⇒MembrePersonnel)
 
 Contraintes :
-INTERSECTION (PROJECTION(Retard, id), PROJECTION(Deterioration, id)) = {}
-PROJECTION(Retard, personnel) = PROJECTION(MembrePersonnel, login)
-PROJECTION(Deterioration, personnel) = PROJECTION(MembrePersonnel, login)
+- INTERSECTION (PROJECTION(Retard, id), PROJECTION(Deterioration, id)) = {}
+- PROJECTION(Retard, personnel) = PROJECTION(MembrePersonnel, login)
+- PROJECTION(Deterioration, personnel) = PROJECTION(MembrePersonnel, login)

@@ -106,7 +106,7 @@ Contributeur "1..n" -up- "*" Film : est acteur dans >
 Contributeur "1..n" -up- "*" OeuvreMusicale : compose une >
 Contributeur "1..n" -up- "*" OeuvreMusicale : interprète une >
 
-Adherent "*" -- "*" Emprunt : effectuer >
+Adherent "1" -- "*" Emprunt : effectuer >
 Emprunt "*" -- "1" Exemplaire : nécessite >
 
 

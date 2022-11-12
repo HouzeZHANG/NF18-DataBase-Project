@@ -104,7 +104,7 @@
  
 **Adhérent** : compte utilisateur login {key}, compte utilisateur mdp (NOT NULL), nom (NOT NULL), prénom (NOT NULL), date de naissance, rue, ville, code postal, adresse mail (NOT NULL), téléphone (NOT NULL), droit à l'emprunt (0 ou 1), actif (0 ou 1)
  
-→ peut effectuer un ou plusieurs Emprunts (0...n — 0...n)
+→ peut effectuer un ou plusieurs Emprunts (1 — 0...n)
  
 → le nombre d'emprunts est limité et il est calculé dans une requête à l'aide de la classe Emprunt, cela apparaîtra dans l'application.
  

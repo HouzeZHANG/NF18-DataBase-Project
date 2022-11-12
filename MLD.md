@@ -23,7 +23,13 @@ MembrePersonnel(#login:varchar, mdp:varchar, nom: varchar, prenom: varchar, code
 ## Exemplaire
 Exemplaire(#id: int, etat : {neuf, bon, abîmé, perdu}, disponible :  bool, code_oeuvre⇒OeuvreMusicale, code_film⇒Film, code_livre⇒Livre)
 - clé artificielle id implémentée car chaque exemplaire est unique et on va utiliser cette clé pour la classe emprunt
+- clé artificielle id implémentée car chaque exemplaire est unique et on va utiliser cette clé pour la classe Emprunt
 - code_oeuvre OR code_film OR code_livre (dû à la transformation d’héritage par classes filles)
+
+Contraintes :
+PROJECTION(Exemplaire, code_oeuvre) = PROJECTION(OeuvreMusicale, code) OR
+PROJECTION(Exemplaire, code_film) = PROJECTION(Film, code) OR
+PROJECTION(Exemplaire, code_livre) = PROJECTION(Livre, code)
 
 ## Contributeur
 Contributeur(#nom: varchar, #prenom: varchar, date_naissance: date, nationalite: varchar)
@@ -38,27 +44,49 @@ Emprunt(#id : int, exemplaire⇒Exemplaire, date_pret: date, date_retour : date,
 - date_rendu et date_retour>date_pret
 - deterioration OR retard
 
+Contraintes :
+PROJECTION(Emprunt, personnel) = PROJECTION(MembrePersonnel, login)
+PROJECTION(Emprunt, exemplaire) = PROJECTION(Exemplaire, id)
+PROJECTION(Emprunt, retard) = PROJECTION(Retard, id)
+PROJECTION(Emprunt, deterioration) = PROJECTION(Deterioration, id)
+
 ## Emprunter
 Emprunter(#adherent⇒Adherent, #emprunt⇒Emprunt)
 
-- Contraintes:
-Projection(Emprunt, id) = Projection(Emprunter, emprunt)
+Contraintes:
 - En général, une entrée de la table d'emprunt correspond à un enregistrement emprunteur, mais tous les enregistrements adhérents ne correspondent pas à des enregistrements emprunteurs.
 
 ## Composer
 Composer(#contrib⇒Contributeur, #code⇒OeuvreMusicale)
+- avec (contrib, code) UNIQUE (déjà indiqué dans l'utilisation des clés ; pour obtenir un MLD explicite, cette précision a été rajoutée (un Contributeur ne compose qu'une seule fois une oeuvre qu'une seule fois))
 
 ## Interpréter
 Interpréter(#contrib⇒Contributeur, #code⇒OeuvreMusicale.code)
+- avec (contrib, code) UNIQUE
 
 ## Réaliser
 Réaliser(#contrib⇒Contributeur, #code⇒Film.code)
+- avec (contrib, code) UNIQUE
 
 ## Acteur
 Acteur(#contrib⇒Contributeur, #code⇒Film.code)
+- avec (contrib, code) UNIQUE
 
 ## Auteur
 Auteur(#contrib⇒Contributeur, #code⇒Livre.code)
+- avec (contrib, code) UNIQUE
+
+Contraintes :
+INTERSECTION(Projection(Auteur, contrib), Projection(Acteur, contrib)) UNION 
+INTERSECTION(Projection(Auteur, contrib), Projection(Réaliser, contrib)) UNION
+INTERSECTION(Projection(Auteur, contrib), Projection(Interpréter, contrib)) UNION
+INTERSECTION(Projection(Auteur, contrib), Projection(Composer, contrib)) UNION 
+INTERSECTION(Projection(Acteur, contrib), Projection(Réaliser, contrib)) UNION
+INTERSECTION(Projection(Acteur, contrib), Projection(Interpréter, contrib)) UNION 
+INTERSECTION(Projection(Acteur, contrib), Projection(Composer, contrib)) UNION 
+INTERSECTION(Projection(Réaliser, contrib), Projection(Interpréter, contrib)) UNION
+INTERSECTION(Projection(Réaliser, contrib), Projection(Composer, contrib)) UNION
+INTERSECTION(Projection(Interpréter, contrib), Projection(Composer, contrib)) NULL OR NOT NULL, i.e. un contributeur peut contribuer plusieurs fois sur une même oeuvre avec des actions différentes.
 
 # 4. Transformations d’héritage
 
@@ -91,3 +119,8 @@ Retard(#id : int, personnel⇒MembrePersonnel, fin : bool)
 
 ## Deterioration
 Deterioration(#id : int, remboursement : bool, personnel⇒MembrePersonnel)
+
+Contraintes :
+INTERSECTION (PROJECTION(Retard, id), PROJECTION(Deterioration, id)) = {}
+PROJECTION(Retard, personnel) = PROJECTION(MembrePersonnel, login)
+PROJECTION(Deterioration, personnel) = PROJECTION(MembrePersonnel, login)

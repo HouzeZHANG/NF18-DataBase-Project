@@ -124,8 +124,8 @@ CREATE TABLE Emprunt(
     personnel VARCHAR(100) REFERENCES MembrePersonnel (login),
     retard INT REFERENCES Retard(id),
     deterioration INT REFERENCES Deterioration(id) CHECK((deterioration AND NOT retard)OR(retard AND NOT deterioration))
+    adherent VARCHAR NOT NULL REFERENCES Adherent (login),
     PRIMARY KEY (exemplaire, date_pret),
-    adherent VARCHAR NOT NULL REFERENCES Adherent (login)
 );
 INSERT INTO Emprunt VALUES (‘1’, ‘11/01/2022’, ‘11/02/2022’, ‘25/01/2022’, ‘mazir’, NULL, ‘1’, 'apple');
 INSERT INTO Emprunt VALUES (‘2’, ‘04/06/2022’, ‘04/07/2022’, ‘07/07/2022’, ‘eiro’, ‘1’, NULL, 'otari');

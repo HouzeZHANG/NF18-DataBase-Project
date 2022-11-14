@@ -71,7 +71,7 @@ class Exemplaire{
 
 
 class Emprunt{
-  date_pret:Date
+  date_pret:Date {local key}
   date_retour:Date
   date_rendu:Date
 }

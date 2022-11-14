@@ -189,7 +189,7 @@ INSERT INTO Auteur VALUES (‘Orwell’, ‘Georges’, ‘AIHDA98’);
  
 Affichage des Emprunts des Adhérents
 Affichage des Exemplaires de tel auteur aux Adhérents
-Affichage des Livres aux Adhérents
+CJ-Affichage des Livres aux Adhérents
 Ajouter des documents
 Modifier leur description
 Ajouter des exemplaires d'une Ressource

@@ -117,7 +117,6 @@ INSERT INTO Exemplaire VALUES (‘1’, ‘neuf’, ‘1’, NULL, ‘PULFI96’
 INSERT INTO Exemplaire VALUES (‘2’, ‘bon’, ‘0’, NULL, NULL, ‘LRELN69’);
  
 CREATE TABLE Emprunt(
-    id INT PRIMARY KEY,
     exemplaire INT REFERENCES Exemplaire (id),
     date_pret DATE NOT NULL,
     date_retour DATE NOT NULL CHECK (date_retour>date_pret),
@@ -125,6 +124,7 @@ CREATE TABLE Emprunt(
     personnel VARCHAR(100) REFERENCES MembrePersonnel (login),
     retard INT REFERENCES Retard(id),
     deterioration INT REFERENCES Deterioration(id)
+    PRIMARY KEY (exemplaire, date_pret),
     CHECK((deterioration AND NOT retard)OR(retard AND NOT deterioration))
 );
 INSERT INTO Emprunt VALUES (‘1’, ‘1’, ‘11/01/2022’, ‘11/02/2022’, ‘25/01/2022’, ‘mazir’, NULL, ‘1’);
@@ -189,7 +189,7 @@ INSERT INTO Auteur VALUES (‘Orwell’, ‘Georges’, ‘AIHDA98’);
  
 Affichage des Emprunts des Adhérents
 Affichage des Exemplaires de tel auteur aux Adhérents
-CJ-Affichage des Livres aux Adhérents
+Affichage des Livres aux Adhérents
 Ajouter des documents
 Modifier leur description
 Ajouter des exemplaires d'une Ressource

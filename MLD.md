@@ -38,23 +38,18 @@ Contributeur(#nom: varchar, #prenom: varchar, date_naissance: date, nationalite:
 # 3. Classes issues des association
 
 ## Emprunt
-Emprunt(#id : int, exemplaire⇒Exemplaire, date_pret: date, date_retour : date, date_rendu: date, personnel⇒ MembrePersonnel, retard⇒Retard, deterioration⇒Deterioration)
-- date_pret, date_retour NOT NULL
-- id clé artificielle
+Emprunt(#exemplaire⇒Exemplaire, #date_pret: date, date_retour : date, date_rendu: date, personnel⇒ MembrePersonnel, retard⇒Retard, deterioration⇒Deterioration, adherent=>Adherent)
+- (exemplaire,date_pret)  
+- date_retour NOT NULL
 - date_rendu et date_retour>date_pret
 - deterioration OR retard
+- adherent NOT NULL
 
 Contraintes :
 - PROJECTION(Emprunt, personnel) = PROJECTION(MembrePersonnel, login)
 - PROJECTION(Emprunt, exemplaire) = PROJECTION(Exemplaire, id)
 - PROJECTION(Emprunt, retard) = PROJECTION(Retard, id)
 - PROJECTION(Emprunt, deterioration) = PROJECTION(Deterioration, id)
-
-## Emprunter
-Emprunter(#adherent⇒Adherent, #emprunt⇒Emprunt)
-
-Contraintes:
-- En général, une entrée de la table d'emprunt correspond à un enregistrement emprunteur, mais tous les enregistrements adhérents ne correspondent pas à des enregistrements emprunteurs.
 
 ## Composer
 Composer(#contrib⇒Contributeur, #code⇒OeuvreMusicale)

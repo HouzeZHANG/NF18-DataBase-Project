@@ -39,7 +39,7 @@ Contributeur(#nom: varchar, #prenom: varchar, date_naissance: date, nationalite:
 
 ## Emprunt
 Emprunt(#exemplaire⇒Exemplaire, #date_pret: date, date_retour : date, date_rendu: date, personnel⇒ MembrePersonnel, retard⇒Retard, deterioration⇒Deterioration, adherent=>Adherent)
-- (exemplaire,date_pret)  
+- (exemplaire,date_pret)  clé
 - date_retour NOT NULL
 - date_rendu et date_retour>date_pret
 - deterioration OR retard

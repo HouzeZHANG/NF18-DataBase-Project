@@ -107,11 +107,12 @@ INSERT INTO Livre VALUES (‘AIHDA98’, ‘1984’, ‘1949’, ‘Penguin Rand
  
 CREATE TABLE Exemplaire(
     id INT PRIMARY KEY,
-    etat VARCHAR(100) NOT NULL CHECK (etat IN (‘neuf’, ‘bon’, ‘abîmé’, ‘perdu’))
+    etat VARCHAR(100) NOT NULL CHECK (etat IN (‘neuf’, ‘bon’, ‘abîmé’, ‘perdu’)),
     disponible BOOLEAN,
     code_oeuvre VARCHAR(100) REFERENCES OeuvreMusicale(code),
     code_film VARCHAR(100) REFERENCES Film(code),
-    code_livre VARCHAR(100) REFERENCES Livre(code) CHECK(((code_oeuvre NOT NULL) AND (code_film NULL) AND (code_livre NULL)) OR ((code_oeuvre     NULL) AND (code_film NOT NULL) AND (code_livre NULL)) OR ((code_oeuvre NULL) AND (code_film NULL) AND (code_livre NOT NULL)))
+    code_livre VARCHAR(100) REFERENCES Livre(code), 
+    CHECK(((code_oeuvre <> NULL) AND (code_film = NULL) AND (code_livre = NULL)) OR ((code_oeuvre = NULL) AND (code_film <> NULL) AND (code_livre = NULL)) OR ((code_oeuvre = NULL) AND (code_film = NULL) AND (code_livre <> NULL)))
 );
 INSERT INTO Exemplaire VALUES (‘1’, ‘neuf’, ‘1’, NULL, ‘PULFI96’, NULL);
 INSERT INTO Exemplaire VALUES (‘2’, ‘bon’, ‘0’, NULL, NULL, ‘LRELN69’);

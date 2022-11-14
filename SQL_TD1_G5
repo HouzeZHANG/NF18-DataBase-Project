@@ -184,7 +184,19 @@ CREATE TABLE Acteur(
  
 INSERT INTO Acteur VALUES (‘Travolta’, ‘John’,‘PULFI96’);
 INSERT INTO Acteur VALUES (‘Richard’, ‘Pierre’, ‘LGBCN96’);
- 
+
+Affichage des Emprunts des Adhérents
+Affichage des Exemplaires de tel auteur aux Adhérents
+Affichage des Livres aux Adhérents
+Ajouter des documents
+Modifier leur description
+Ajouter des exemplaires d'une Ressource
+Gestion des Prêts par MembrePersonnel
+Gestion des sanctions par MembrePersonnel
+Affichage des données des utilisateurs pour un Adhérent 
+Profil des Adhérents 
+Les exemplaires populaires
+Affichage des genres  
 CREATE TABLE Auteur(
     contrib_nom VARCHAR(100),
     contrib_prenom VARCHAR(100),

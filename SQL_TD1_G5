@@ -51,7 +51,7 @@ CREATE TABLE Retard(
     personnel VARCHAR(100) REFERENCES MembrePersonnel(login),
     fin BOOLEAN
 );
-INSERT INTO Retard VALUES (‘1’, ‘apple’, ‘0’);
+INSERT INTO Retard VALUES (‘1’, ‘Chris’, ‘0’);
  
 CREATE TABLE Deterioration(
     id INT PRIMARY KEY,

@@ -127,9 +127,9 @@ CREATE TABLE Emprunt(
     PRIMARY KEY (exemplaire, date_pret),
     adherent VARCHAR NOT NULL REFERENCES Adherent (login)
 );
-INSERT INTO Emprunt VALUES (‘1’, ‘1’, ‘11/01/2022’, ‘11/02/2022’, ‘25/01/2022’, ‘mazir’, NULL, ‘1’);
-INSERT INTO Emprunt VALUES (‘2’, ‘2’, ‘04/06/2022’, ‘04/07/2022’, ‘07/07/2022’, ‘eiro’, ‘1’, NULL);
-INSERT INTO Emprunt VALUES (‘3’, ‘2’, ‘25/10/2022’, ‘25/11/2022’, NULL, ‘eiro’, NULL, NULL);
+INSERT INTO Emprunt VALUES (‘1’, ‘11/01/2022’, ‘11/02/2022’, ‘25/01/2022’, ‘mazir’, NULL, ‘1’, 'apple');
+INSERT INTO Emprunt VALUES (‘2’, ‘04/06/2022’, ‘04/07/2022’, ‘07/07/2022’, ‘eiro’, ‘1’, NULL, 'otari');
+INSERT INTO Emprunt VALUES (‘2’, ‘25/10/2022’, ‘25/11/2022’, NULL, ‘eiro’, NULL, NULL, 'asifflet');
   
 CREATE TABLE Composer(
     contrib_nom VARCHAR(100),

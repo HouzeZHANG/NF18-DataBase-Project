@@ -130,16 +130,7 @@ CREATE TABLE Emprunt(
 INSERT INTO Emprunt VALUES (‘1’, ‘1’, ‘11/01/2022’, ‘11/02/2022’, ‘25/01/2022’, ‘mazir’, NULL, ‘1’);
 INSERT INTO Emprunt VALUES (‘2’, ‘2’, ‘04/06/2022’, ‘04/07/2022’, ‘07/07/2022’, ‘eiro’, ‘1’, NULL);
 INSERT INTO Emprunt VALUES (‘3’, ‘2’, ‘25/10/2022’, ‘25/11/2022’, NULL, ‘eiro’, NULL, NULL);
- 
-CREATE TABLE Emprunter(
-    adherent VARCHAR(100) REFERENCES Adherent(login),
-    emprunt INT REFERENCES Emprunt(id),
-    PRIMARY KEY(adherent,emprunt)
-);
-INSERT INTO Emprunter VALUES (‘apple’, ‘1’);
-INSERT INTO Emprunter VALUES (‘otari’, ‘2’);
-INSERT INTO Emprunter VALUES (‘asifflet’, ‘3’);
- 
+  
 CREATE TABLE Composer(
     contrib_nom VARCHAR(100),
     contrib_prenom VARCHAR(100),
@@ -184,19 +175,7 @@ CREATE TABLE Acteur(
  
 INSERT INTO Acteur VALUES (‘Travolta’, ‘John’,‘PULFI96’);
 INSERT INTO Acteur VALUES (‘Richard’, ‘Pierre’, ‘LGBCN96’);
-
-Affichage des Emprunts des Adhérents
-Affichage des Exemplaires de tel auteur aux Adhérents
-Affichage des Livres aux Adhérents
-Ajouter des documents
-Modifier leur description
-Ajouter des exemplaires d'une Ressource
-Gestion des Prêts par MembrePersonnel
-Gestion des sanctions par MembrePersonnel
-Affichage des données des utilisateurs pour un Adhérent 
-Profil des Adhérents 
-Les exemplaires populaires
-Affichage des genres  
+  
 CREATE TABLE Auteur(
     contrib_nom VARCHAR(100),
     contrib_prenom VARCHAR(100),
@@ -208,4 +187,15 @@ CREATE TABLE Auteur(
 INSERT INTO Auteur VALUES (‘Beyle’, ‘Henri’, ‘LRELN69’);
 INSERT INTO Auteur VALUES (‘Orwell’, ‘Georges’, ‘AIHDA98’);
  
-
+Affichage des Emprunts des Adhérents
+Affichage des Exemplaires de tel auteur aux Adhérents
+Affichage des Livres aux Adhérents
+Ajouter des documents
+Modifier leur description
+Ajouter des exemplaires d'une Ressource
+Gestion des Prêts par MembrePersonnel
+Gestion des sanctions par MembrePersonnel
+Affichage des données des utilisateurs pour un Adhérent 
+Profil des Adhérents 
+Les exemplaires populaires
+Affichage des genres

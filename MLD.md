@@ -53,7 +53,7 @@ Contraintes :
 
 ## Composer
 Composer(#contrib⇒Contributeur, #code⇒OeuvreMusicale)
-- avec (contrib, code) UNIQUE (déjà indiqué dans l'utilisation des clés ; pour obtenir un MLD explicite, cette précision a été rajoutée (un Contributeur ne compose qu'une seule fois une oeuvre qu'une seule fois))
+- avec (contrib, code) UNIQUE (déjà indiqué dans l'utilisation des clés ; pour obtenir un MLD explicite, cette précision a été rajoutée (un Contributeur ne compose qu'une seule fois une oeuvre))
 
 ## Interpréter
 Interpréter(#contrib⇒Contributeur, #code⇒OeuvreMusicale.code)

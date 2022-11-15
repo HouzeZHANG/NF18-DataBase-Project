@@ -51,14 +51,14 @@ CREATE TABLE Retard(
     personnel VARCHAR(100) REFERENCES MembrePersonnel(login),
     fin BOOLEAN
 );
-INSERT INTO Retard VALUES (‘1’, ‘Chris’, ‘0’);
+INSERT INTO Retard VALUES ('1', 'Chris', '0');
  
 CREATE TABLE Deterioration(
     id INT PRIMARY KEY,
-    remboursement BOOLEAN,
     personnel VARCHAR(100) REFERENCES MembrePersonnel(login)
+    remboursement BOOLEAN,
 );
-INSERT INTO Deterioration VALUES (‘1’, ‘0’, ‘eiro’);
+INSERT INTO Deterioration VALUES ('1', 'eiro', '0');
  
 CREATE TABLE OeuvreMusicale(
     code VARCHAR(100) PRIMARY KEY,
@@ -70,8 +70,8 @@ CREATE TABLE OeuvreMusicale(
     longueur TIME
 );
  
-INSERT INTO OeuvreMusicale VALUES (‘LLDCT38’, ‘Le Lac des cygnes’, ‘1877’, NULL, ‘ballet classique’, ‘LEL134’, ‘02:30:00’);
-INSERT INTO OeuvreMusicale VALUES (‘TDCAU41’, ‘They Don’t Care About Us’, ‘2011’, NULL, ‘mélange de styles’, ‘TDC123’, ‘00:04:28’);
+INSERT INTO OeuvreMusicale VALUES ('LLDCT38', 'Le Lac des cygnes', TO_DATE('1877', 'YYYY'), NULL, 'ballet classique', 'LEL134', '02:30:00');
+INSERT INTO OeuvreMusicale VALUES ('TDCAU41', 'They Don’t Care About Us', TO_DATE('2011', 'YYYY'), NULL, 'mélange de styles', 'TDC123', '00:04:28');
  
  
 CREATE TABLE Film(
@@ -85,8 +85,8 @@ CREATE TABLE Film(
     synopsis VARCHAR(100)
 );
  
-INSERT INTO Film VALUES (‘PULFI96’, ‘Pulp Fiction’, ‘1994’, NULL, ‘gangsters’, ‘PUF932’, ‘02:45:00’);
-INSERT INTO Film VALUES (‘LGBCN96’, ‘Le Grand Blond avec une chaussure noire’, ‘1972’, NULL, ‘espionnage parodique’, ‘LBB1325’, ‘01:30:00’);
+INSERT INTO Film VALUES ('PULFI96', 'Pulp Fiction', TO_DATE('1994', 'YYYY'), NULL, 'gangsters', 'PUF932', '02:45:00');
+INSERT INTO Film VALUES ('LGBCN96', 'Le Grand Blond avec une chaussure noire', TO_DATE('1972', 'YYYY'), NULL, 'espionnage parodique', 'LBB1325', '01:30:00');
  
  
 CREATE TABLE Livre(
@@ -101,13 +101,13 @@ CREATE TABLE Livre(
     langue VARCHAR(100)
 );
  
-INSERT INTO Livre VALUES (‘LRELN69’, ‘Le Rouge et le Noir’, ‘1830’, ‘Poche’, ‘roman’ , ‘REN699’, ‘978-2253077497’, ‘C’est le roman de l’énergie d’un jeune homme ardent, exigeant et pauvre dans la société de la Restauration.’, ‘française’);
-INSERT INTO Livre VALUES (‘AIHDA98’, ‘1984’, ‘1949’, ‘Penguin Random House Children’s UK’, ‘roman’ , ‘AIH984’, ‘978-0241430972’, ‘Big Brother and the Thought Police watch everyone for signs of Thought Crime. But when Winston falls in love with Julia, he begins to have new ideas and hopes.’, ‘anglaise’);
+INSERT INTO Livre VALUES ('LRELN69', 'Le Rouge et le Noir', TO_DATE('1830', 'YYYY'), 'Poche', 'roman' , 'REN699', '978-2253077497', 'L’énergie d’un jeune homme ardent, exigeant et pauvre dans la société de la Restauration.', 'française');
+INSERT INTO Livre VALUES ('AIHDA98', '1984', TO_DATE('1949', 'YYYY'), 'Penguin Random House Children’s UK', 'roman' , 'AIH984', '978-0241430972', 'Big Brother and the Thought Police watch everyone for signs of Thought Crime.', 'anglaise');
  
  
 CREATE TABLE Exemplaire(
     id INT PRIMARY KEY,
-    etat VARCHAR(100) NOT NULL CHECK (etat IN (‘neuf’, ‘bon’, ‘abîmé’, ‘perdu’)),
+    etat VARCHAR(100) NOT NULL CHECK (etat IN ('neuf', 'bon', 'abîmé', 'perdu')),
     disponible BOOLEAN,
     code_oeuvre VARCHAR(100) REFERENCES OeuvreMusicale(code),
     code_film VARCHAR(100) REFERENCES Film(code),
@@ -125,14 +125,14 @@ CREATE TABLE Emprunt(
     date_rendu DATE CHECK (date_rendu>date_pret),
     personnel VARCHAR(100) REFERENCES MembrePersonnel (login),
     adherent VARCHAR(100) REFERENCES Adherent (login),
-    retard BOOLEAN REFERENCES Retard(id),
-    deterioration BOOLEAN REFERENCES Deterioration(id),
-    CHECK((deterioration AND NOT retard)OR(retard AND NOT deterioration)),
+    retard INT REFERENCES Retard(id),
+    deterioration INT REFERENCES Deterioration(id),
+    CHECK(((deterioration <> NULL) AND (retard = NULL)) OR ((retard <> NULL) AND (deterioration = NULL)) OR ((deterioration = NULL) AND (retard = NULL))),
     PRIMARY KEY (exemplaire, date_pret)
 );
-INSERT INTO Emprunt VALUES (‘1’, ‘11/01/2022’, ‘11/02/2022’, ‘25/01/2022’, ‘mazir’, NULL, ‘1’, 'apple');
-INSERT INTO Emprunt VALUES (‘2’, ‘04/06/2022’, ‘04/07/2022’, ‘07/07/2022’, ‘eiro’, ‘1’, NULL, 'otari');
-INSERT INTO Emprunt VALUES (‘2’, ‘25/10/2022’, ‘25/11/2022’, NULL, ‘eiro’, NULL, NULL, 'asifflet');
+INSERT INTO Emprunt VALUES ('1', TO_DATE('11-01-2022', 'DD-MM-YYYY'), TO_DATE('11-02-2022', 'DD-MM-YYYY'), TO_DATE('25-01-2022', 'DD-MM-YYYY'), 'mazir', 'apple', NULL, '1');
+INSERT INTO Emprunt VALUES ('2', TO_DATE('04-06-2022', 'DD-MM-YYYY'), TO_DATE('04-07-2022', 'DD-MM-YYYY'), TO_DATE('07-07-2022', 'DD-MM-YYYY'), 'eiro', 'otari', '1', NULL);
+INSERT INTO Emprunt VALUES ('2', TO_DATE('25-10-2022', 'DD-MM-YYYY'), TO_DATE('25-11-2022', 'DD-MM-YYYY'), NULL, 'eiro', 'asifflet', NULL, NULL);
   
 CREATE TABLE Composer(
     contrib_nom VARCHAR(100),
@@ -142,9 +142,9 @@ CREATE TABLE Composer(
     PRIMARY KEY(contrib_nom,contrib_prenom,code)
 );
  
-INSERT INTO Composer VALUES (‘Pior Ilitch’, ‘Tchaïkovski’, ‘LLDCT38’);
-INSERT INTO Composer VALUES (‘Maalouf’, ‘Ibrahim’, ‘TDCAU41’);
- 
+INSERT INTO Composer VALUES ('Pior Ilitch', 'Tchaïkovski', 'LLDCT38');
+INSERT INTO Composer VALUES ('Maalouf', 'Ibrahim', 'TDCAU41');
+
 CREATE TABLE Interpreter(
     contrib_nom VARCHAR(100),
     contrib_prenom VARCHAR(100),
@@ -153,7 +153,7 @@ CREATE TABLE Interpreter(
     PRIMARY KEY(contrib_nom,contrib_prenom,code)
 );
  
-INSERT INTO Interpréter VALUES (‘Maalouf’, ‘Ibrahim’, ‘TDCAU41’);
+INSERT INTO Interpreter VALUES ('Maalouf', 'Ibrahim', 'TDCAU41');
  
  
 CREATE TABLE Realiser(
@@ -164,8 +164,8 @@ CREATE TABLE Realiser(
     PRIMARY KEY(contrib_nom,contrib_prenom,code)
 );
  
-INSERT INTO Realiser VALUES (‘Tarantino’, ‘Quentin’, ‘PULFI96’);
-INSERT INTO Realiser VALUES (‘Robert’, ‘Yves’, ‘LGBCN96’);
+INSERT INTO Realiser VALUES ('Tarantino', 'Quentin', 'PULFI96');
+INSERT INTO Realiser VALUES ('Robert', 'Yves', 'LGBCN96');
  
  
 CREATE TABLE Acteur(
@@ -176,8 +176,8 @@ CREATE TABLE Acteur(
     PRIMARY KEY(contrib_nom,contrib_prenom,code)
 );
  
-INSERT INTO Acteur VALUES (‘Travolta’, ‘John’,‘PULFI96’);
-INSERT INTO Acteur VALUES (‘Richard’, ‘Pierre’, ‘LGBCN96’);
+INSERT INTO Acteur VALUES ('Travolta', 'John','PULFI96');
+INSERT INTO Acteur VALUES ('Richard', 'Pierre', 'LGBCN96');
   
 CREATE TABLE Auteur(
     contrib_nom VARCHAR(100),
@@ -187,8 +187,8 @@ CREATE TABLE Auteur(
     PRIMARY KEY(contrib_nom,contrib_prenom,code)
 );
  
-INSERT INTO Auteur VALUES (‘Beyle’, ‘Henri’, ‘LRELN69’);
-INSERT INTO Auteur VALUES (‘Orwell’, ‘Georges’, ‘AIHDA98’);
+INSERT INTO Auteur VALUES ('Beyle', 'Henri', 'LRELN69');
+INSERT INTO Auteur VALUES ('Orwell', 'Georges', 'AIHDA98');
  
 Affichage des Emprunts des Adhérents
 Affichage des Exemplaires de tel auteur aux Adhérents

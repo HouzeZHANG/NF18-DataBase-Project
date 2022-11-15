@@ -40,8 +40,8 @@ CREATE TABLE Retard(
  
 CREATE TABLE Deterioration(
     id INT PRIMARY KEY,
-    personnel VARCHAR(100) REFERENCES MembrePersonnel(login)
-    remboursement BOOLEAN,
+    personnel VARCHAR(100) REFERENCES MembrePersonnel(login),
+    remboursement BOOLEAN
 );
  
 CREATE TABLE OeuvreMusicale(

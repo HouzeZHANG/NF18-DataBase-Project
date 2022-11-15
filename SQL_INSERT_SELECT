@@ -71,6 +71,12 @@ WHERE Emprunt.adherent='apple';
 
 Affichage des Exemplaires de tel auteur aux Adhérents
 ?
+SELECT Livre.titre
+FROM Livre
+JOIN Auteur
+ON Livre.code=Auteur.code
+WHERE Auteur.contrib_nom='Orwell' 
+AND Auteur.contrib_prenom='Georges';
 
 
 Affichage des Livres - Films - Oeuvres musicales aux Adhérents
@@ -90,7 +96,13 @@ INSERT INTO OeuvreMusicale VALUES(code,titre,date_apparition,editeur,genre,code_
 
 
 Modifier leur description
-?
+UPDATE Film 
+SET synopsis={}
+WHERE code={}
+
+UPDATE Livre
+SET resume={}
+WHERE code={}
 
 
 Ajouter des exemplaires d'une Ressource
@@ -114,7 +126,29 @@ Profil des Adhérents
 
 
 Les exemplaires populaires
-?
+SELECT Film.titre, Film.genre, COUNT(*) AS Popularité
+FROM Film
+JOIN Exemplaire 
+ON Exemplaire.code_film=Film.code
+JOIN Emprunt 
+ON Emprunt.exemplaire=Exemplaire.id
+GROUP BY Film.titre ASC;
+
+SELECT OeuvreMusicale.titre, OeuvreMusicale.genre, COUNT(*) AS Popularité
+FROM OeuvreMusicale
+JOIN Exemplaire 
+ON Exemplaire.code_oeuvre=OeuvreMusicale.code
+JOIN Emprunt 
+ON Emprunt.exemplaire=Exemplaire.id
+GROUP BY OeuvreMusicale.titre ASC;
+
+SELECT Livre.titre, Livre.genre, COUNT(*) AS Popularité
+FROM Livre
+JOIN Exemplaire 
+ON Exemplaire.code_livre=Livre.code
+JOIN Emprunt 
+ON Emprunt.exemplaire=Exemplaire.id
+GROUP BY Livre.titre ASC;
 
 
 Affichage des genres

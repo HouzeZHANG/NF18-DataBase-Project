@@ -190,12 +190,55 @@ CREATE TABLE Auteur(
 INSERT INTO Auteur VALUES ('Beyle', 'Henri', 'LRELN69');
 INSERT INTO Auteur VALUES ('Orwell', 'Georges', 'AIHDA98');
  
-Affichage des Emprunts des Adhérents
+Affichage des Emprunts des Adhérents (exemple : 'apple')
+SELECT Film.titre, Emprunt.date_pret, Emprunt.date_retour
+FROM Emprunt
+JOIN Exemplaire 
+ON Emprunt.exemplaire=Exemplaire.id
+JOIN Film
+ON Film.code=Exemplaire.code_film
+WHERE Emprunt.adherent='apple';
+ 
+SELECT OeuvreMusicale.titre, Emprunt.date_pret, Emprunt.date_retour
+FROM Emprunt
+JOIN Exemplaire 
+ON Emprunt.exemplaire=Exemplaire.id
+JOIN OeuvreMusicale
+ON OeuvreMusicale.code=Exemplaire.code_oeuvre
+WHERE Emprunt.adherent='apple';
+ 
+SELECT Livre.titre, Emprunt.date_pret, Emprunt.date_retour
+FROM Emprunt
+JOIN Exemplaire 
+ON Emprunt.exemplaire=Exemplaire.id
+JOIN Livre
+ON Livre.code=Exemplaire.code_livre
+WHERE Emprunt.adherent='apple';
+
+
 Affichage des Exemplaires de tel auteur aux Adhérents
-Affichage des Livres aux Adhérents
+Affichage des Livres - Films - Oeuvres musicales aux Adhérents
+SELECT * FROM Livre;
+
+SELECT * FROM Film;
+
+SELECT * FROM OeuvreMusicale;
+
+
 Ajouter des documents
+INSERT INTO Livre VALUES (code,titre,date_apparition,editeur,genre,code_classification,ISBN,resume,langue); {pour le programme en python, affectation aux variables}
+
+INSERT INTO Film VALUES (code,titre,date_apparition,editeur,genre,code_classification,longueur,synopsis);
+
+INSERT INTO OeuvreMusicale VALUES(code,titre,date_apparition,editeur,genre,code_classification,longueur);
+
+
 Modifier leur description
+
 Ajouter des exemplaires d'une Ressource
+INSERT INTO Exemplaire VALUES (etat,disponible,code_oeuvre,code_film,code_livre);
+
+
 Gestion des Prêts par MembrePersonnel
 Gestion des sanctions par MembrePersonnel
 Affichage des données des utilisateurs pour un Adhérent 

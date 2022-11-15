@@ -71,12 +71,15 @@ WHERE Emprunt.adherent='apple';
 
 Affichage des Exemplaires de tel auteur aux Adhérents
 ?
-SELECT Livre.titre
-FROM Livre
+SELECT Livre.titre, COUNT(*) AS NombreExemplaire
+FROM Exemplaire
+JOIN Livre
+ON Exemplaire.code_livre=Livre.code
 JOIN Auteur
 ON Livre.code=Auteur.code
 WHERE Auteur.contrib_nom='Orwell' 
-AND Auteur.contrib_prenom='Georges';
+AND Auteur.contrib_prenom='Georges'
+ORDER BY NombreExemplaire ASC;
 
 
 Affichage des Livres - Films - Oeuvres musicales aux Adhérents

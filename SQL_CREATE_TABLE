@@ -41,6 +41,7 @@ INSERT INTO Acteur VALUES ('Richard', 'Pierre', 'LGBCN96');
   
 INSERT INTO Auteur VALUES ('Beyle', 'Henri', 'LRELN69');
 INSERT INTO Auteur VALUES ('Orwell', 'Georges', 'AIHDA98');
+
  
 Affichage des Emprunts des Adhérents (exemple : 'apple')
 SELECT Film.titre, Emprunt.date_pret, Emprunt.date_retour
@@ -69,6 +70,9 @@ WHERE Emprunt.adherent='apple';
 
 
 Affichage des Exemplaires de tel auteur aux Adhérents
+?
+
+
 Affichage des Livres - Films - Oeuvres musicales aux Adhérents
 SELECT * FROM Livre;
 
@@ -86,14 +90,42 @@ INSERT INTO OeuvreMusicale VALUES(code,titre,date_apparition,editeur,genre,code_
 
 
 Modifier leur description
+?
+
 
 Ajouter des exemplaires d'une Ressource
 INSERT INTO Exemplaire VALUES (etat,disponible,code_oeuvre,code_film,code_livre);
 
 
 Gestion des Prêts par MembrePersonnel
+?
+
+
 Gestion des sanctions par MembrePersonnel
+?
+
+
 Affichage des données des utilisateurs pour un Adhérent 
+?
+
+
 Profil des Adhérents 
+?
+
+
 Les exemplaires populaires
+?
+
+
 Affichage des genres
+SELECT *
+FROM Livre
+WHERE genre={};
+
+SELECT *
+FROM Film
+WHERE genre={};
+
+SELECT *
+FROM OeuvreMusicale
+WHERE genre={};

@@ -12,7 +12,7 @@ CREATE TABLE  Adherent(
     actif BOOLEAN,
     droit_emprunt BOOLEAN
 );
-INSERT INTO Adherent VALUES (‘apple’, ‘123456’, ‘Steve’, ‘Jobs’, ‘1955-02-24’, ‘60200’, ‘1 Rue des Bonnetiers’, 'Compiègne', ‘steve.jobs@gmail.com’, ‘(800)275-2273’, True, True);
+INSERT INTO Adherent VALUES ('apple', '123456', 'Steve', 'Jobs', '1955-02-24', '60200', '1 Rue des Bonnetiers', 'Compiègne', 'steve.jobs@gmail.com', '(800)275-2273', True, True);
  
 INSERT INTO Adherent VALUES ('otari', 'oTsuv471', 'Tari', 'Ousmane', '1998-07-15', '60200', '4 Rue Carnot', 'Compiègne', 'ousmane.tari@gmail.com', '0685967412', True, True);
  
@@ -29,7 +29,7 @@ CREATE TABLE MembrePersonnel(
     ville VARCHAR(100),
     adresse_mail VARCHAR(100) NOT NULL
 );
-INSERT INTO MembrePersonnel VALUES(‘Chris’, ‘654321’, ‘LU’, ‘Maybe’, ‘13100’, ‘13 Fleury val’, ‘Aix-en-provence’, ‘Fendi@outlook.com’);
+INSERT INTO MembrePersonnel VALUES('Chris', '654321', 'LU', 'Maybe', '13100', '13 Fleury val', 'Aix-en-provence', 'Fendi@outlook.com');
  
 INSERT INTO MembrePersonnel VALUES('mazir', 'mA12ghuylm','Azir', 'Mohammed', '60000', '2 Avenue de la Paix','Beauvais', 'mohammed.azir@gmail.com');
  
@@ -43,7 +43,7 @@ CREATE TABLE Contributeur(
     PRIMARY KEY (nom,prenom)
 );
  
-INSERT INTO Contributeur VALUES (‘Pior Ilitch’, ‘Tchaïkovski’, ‘1840-04-25’, ‘russe’), (‘Maalouf’, ‘Ibrahim’, ‘1980-11-05’, ‘française, libanaise’), (‘Tarantino’, ‘Quentin’, ‘1963-03-27’, ‘américaine’), (‘Robert’, ‘Yves’, ‘1920-06-19’, ‘française’), (‘Travolta’, ‘John’, ‘1954-02-18’, ‘américaine’), (‘Richard’, ‘Pierre’, ‘1934-08-16’, ‘française’), (‘Beyle’, ‘Henri’, ‘1783-01-23’, ‘française’), (‘Orwell’, ‘Georges’, ‘1903-06-25’, ‘britannique’);
+INSERT INTO Contributeur VALUES ('Pior Ilitch', 'Tchaïkovski', '1840-04-25', 'russe'), ('Maalouf', 'Ibrahim', '1980-11-05', 'française, libanaise'), ('Tarantino', 'Quentin', '1963-03-27', 'américaine'), ('Robert', 'Yves', '1920-06-19', 'française'), ('Travolta', 'John', '1954-02-18', 'américaine'), ('Richard', 'Pierre', '1934-08-16', 'française'), ('Beyle', 'Henri', '1783-01-23', 'française'), ('Orwell', 'Georges', '1903-06-25', 'britannique');
  
  
 CREATE TABLE Retard(
@@ -114,8 +114,9 @@ CREATE TABLE Exemplaire(
     code_livre VARCHAR(100) REFERENCES Livre(code), 
     CHECK(((code_oeuvre <> NULL) AND (code_film = NULL) AND (code_livre = NULL)) OR ((code_oeuvre = NULL) AND (code_film <> NULL) AND (code_livre = NULL)) OR ((code_oeuvre = NULL) AND (code_film = NULL) AND (code_livre <> NULL)))
 );
-INSERT INTO Exemplaire VALUES (‘1’, ‘neuf’, ‘1’, NULL, ‘PULFI96’, NULL);
-INSERT INTO Exemplaire VALUES (‘2’, ‘bon’, ‘0’, NULL, NULL, ‘LRELN69’);
+INSERT INTO Exemplaire VALUES ('1', 'neuf', '1', NULL, 'PULFI96', NULL);
+INSERT INTO Exemplaire VALUES ('2', 'bon', '0', NULL, NULL, 'LRELN69');
+
  
 CREATE TABLE Emprunt(
     exemplaire INT REFERENCES Exemplaire (id),
@@ -123,10 +124,11 @@ CREATE TABLE Emprunt(
     date_retour DATE NOT NULL CHECK (date_retour>date_pret),
     date_rendu DATE CHECK (date_rendu>date_pret),
     personnel VARCHAR(100) REFERENCES MembrePersonnel (login),
-    retard INT REFERENCES Retard(id),
-    deterioration INT REFERENCES Deterioration(id) CHECK((deterioration AND NOT retard)OR(retard AND NOT deterioration))
-    adherent VARCHAR NOT NULL REFERENCES Adherent (login),
-    PRIMARY KEY (exemplaire, date_pret),
+    adherent VARCHAR(100) REFERENCES Adherent (login),
+    retard BOOLEAN REFERENCES Retard(id),
+    deterioration BOOLEAN REFERENCES Deterioration(id),
+    CHECK((deterioration AND NOT retard)OR(retard AND NOT deterioration)),
+    PRIMARY KEY (exemplaire, date_pret)
 );
 INSERT INTO Emprunt VALUES (‘1’, ‘11/01/2022’, ‘11/02/2022’, ‘25/01/2022’, ‘mazir’, NULL, ‘1’, 'apple');
 INSERT INTO Emprunt VALUES (‘2’, ‘04/06/2022’, ‘04/07/2022’, ‘07/07/2022’, ‘eiro’, ‘1’, NULL, 'otari');

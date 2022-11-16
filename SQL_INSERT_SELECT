@@ -172,8 +172,24 @@ FROM Adherent
 WHERE login='apple';
 
 
-Profil des Adhérents 
+Profil des Adhérents (exemple d'apple pour Film)
 ?
+R1= SELECT Film.genre, MAX(*)
+    FROM Emprunt
+    JOIN Exemplaire 
+    ON Emprunt.exemplaire=Exemplaire.id
+    JOIN Film
+    ON Film.code=Exemplaire.code_film
+    WHERE Emprunt.adherent='apple';
+(puis afficher à l'utilisateur les Films les plus populaires dont le genre est son préféré)
+SELECT Film.titre, COUNT(*) AS Popularité
+FROM Film
+JOIN Exemplaire 
+ON Exemplaire.code_film=Film.code
+JOIN Emprunt 
+ON Emprunt.exemplaire=Exemplaire.id
+GROUP BY Film.titre ASC
+HAVING Film.genre=R1;
 
 
 Les exemplaires populaires

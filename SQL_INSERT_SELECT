@@ -69,7 +69,7 @@ ON Livre.code=Exemplaire.code_livre
 WHERE Emprunt.adherent='apple';
 
 
-Affichage des Exemplaires de tel auteur aux Adhérents
+Affichage des Exemplaires de tel auteur - réalisateur - compositeur aux Adhérents
 ?
 SELECT Livre.titre, COUNT(*) AS NombreExemplaire
 FROM Exemplaire
@@ -79,6 +79,26 @@ JOIN Auteur
 ON Livre.code=Auteur.code
 WHERE Auteur.contrib_nom='Orwell' 
 AND Auteur.contrib_prenom='Georges'
+ORDER BY NombreExemplaire ASC;
+
+SELECT Film.titre, COUNT(*) AS NombreExemplaire
+FROM Exemplaire
+JOIN Film
+ON Exemplaire.code_film=Film.code
+JOIN Realiser
+ON Film.code=Realiser.code
+WHERE Realiser.contrib_nom='Tarantino' 
+AND Realiser.contrib_prenom='Quentin'
+ORDER BY NombreExemplaire ASC;
+
+SELECT OeuvreMusicale.titre, COUNT(*) AS NombreExemplaire
+FROM Exemplaire
+JOIN OeuvreMusicale
+ON Exemplaire.code_oeuvre=OeuvreMusicale.code
+JOIN Composer
+ON OeuvreMusicale.code=Composer.code
+WHERE Composer.contrib_nom='Maalouf' 
+AND Composer.contrib_prenom='Ibrahim'
 ORDER BY NombreExemplaire ASC;
 
 
@@ -114,14 +134,42 @@ INSERT INTO Exemplaire VALUES (etat,disponible,code_oeuvre,code_film,code_livre)
 
 Gestion des Prêts par MembrePersonnel
 ?
+SELECT OeuvreMusicale.titre, Emprunt.date_pret, Emprunt.date_retour
+FROM Emprunt
+JOIN Exemplaire 
+ON Emprunt.exemplaire=Exemplaire.id
+JOIN OeuvreMusicale 
+ON OeuvreMusicale.code=Exemplaire.code_oeuvre
+WHERE membre_personnel=Emprunt.personnel;
 
 
 Gestion des sanctions par MembrePersonnel
 ?
+SELECT OeuvreMusicale.titre, Emprunt.date_pret, Emprunt.date_retour
+FROM Retard
+JOIN Emprunt 
+ON Emprunt.retard=Retard.id
+JOIN Exemplaire 
+ON Emprunt.exemplaire=Exemplaire.id
+JOIN OeuvreMusicale 
+ON OeuvreMusicale.code=Exemplaire.code_oeuvre
+WHERE membre_personnel=Retard.personnel;
+
+SELECT Film.titre, Emprunt.date_pret, Emprunt.date_retour
+FROM Retard
+JOIN Emprunt 
+ON Emprunt.retard=Retard.id
+JOIN Exemplaire 
+ON Emprunt.exemplaire=Exemplaire.id
+JOIN Film 
+ON Film.code=Exemplaire.code_film
+WHERE membre_personnel=Retard.personnel;
 
 
 Affichage des données des utilisateurs pour un Adhérent 
-?
+SELECT nom, prenom, date_naissance, code_postal, adresse_rue, ville, adresse_mail, num_tel, actif, droit_emprunt
+FROM Adherent
+WHERE login='apple';
 
 
 Profil des Adhérents 

@@ -3,130 +3,135 @@ Project: NF18
 Group number: 05
 """
 
-# variable globale pour stocker l'objet de connexion avec base de donnee
-conn = None
+import psycopg2
+from enum import Enum
 
-# variable globale pour indiquer le role de utilisateur
-# si token == 2 il est membrePersonnel, si token == 1 il est aderent
-# mais avant notre utilisateur se connecter, token = None
-role = None
-uid = None
 
-def sqlExecute(sql: string)->list:
-    """cette methode est destine a simplifier le processus de sql, retourner un liste de tuple"""
-    return []
+class Token(Enum):
+    ADHERENT = 'Adherent'
+    MEMBER = 'Member'
 
-def connect_to_db():
-    """return connection of the postresql, if login successfully else return None"""
-    conn = None
+
+class SqlType(Enum):
+    DML = 'dml'
+    DQL = 'dql'
+
+
+def sql_execute(sql, conn, sql_type: SqlType, error_message=None) -> list:
+    """template pattern for sql execute"""
     try:
-        conn = psycopg2.connect(
-            host = "",
-            database = "",
-            user = "",
-            password = ""
-        )
         cur = conn.cursor()
-        print('Postgres version: ')
-        cur.execute('SELECT version()')
-        db_version = cur.fetchone()
-        print(db_version)
-        cur.close()
+        cur.execute(sql)
+        if sql_type is SqlType.DQL:
+            res = cur.fetchall()
+            cur.close()
+            return res
+        elif sql_type is SqlType.DML:
+            cur.commit()
+            return []
     except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-    finally:
-        if conn is not None:
-            conn.close()
-            print('Database connection closed.')
+        print('\n\nSQL_ERROR:\n' + sql)
+        if error_message is None:
+            print(error_message)
+        else:
+            print('ERROR: ' + str(error.__class__))
 
-def login():
-    """verification de role de utilisateur"""
-    role = None
-    uid = None
-    
-    print("Vous etes adherent ou membrePersonnel?")
-    print("1: adherent")
-    print("2: membrePersonnel")
-    response = input("Vous etes: 1/2")
-    if response == '1':
-        role = 1
-    elif response == '2':
-        role = 2
-    else:
-        print("input invalide")
-        return
-    
-    print("\nenterez votre username et mot de passe")
-    username = input("username: ")
-    pwd = input("mot de passe: ")
-    
-    if role == 1:
-        sql = """
-        
-        """
-    else:
-        sql = """
-        
-        """
-    pass
 
-def loop(conn):
-    """main loop of the program"""
-    print("Bonjour, bienvenue a base de donnee biblio")
-    print("Appuyez 1 pour afficher vos emprunts")
-    print("Appuyez 2 pour afficher des exemplaires de auteur")
-    print("Appuyez 3 pour afficher tous les livres")
-    print("Appuyez 4 pour afficher des emprunts des Adherents")
-    print("Appuyez 5 pour afficher des emprunts des Adherents")
-    print("Appuyez 6 pour afficher des emprunts des Adherents")
-    print("Appuyez 7 pour afficher des emprunts des Adherents")
-    print("Appuyez 8 pour afficher des emprunts des Adherents")
-    print("Appuyez 9 pour afficher des emprunts des Adherents")
-    print("Appuyez 10 pour afficher des emprunts des Adherents")
-    print("Appuyez 11 pour afficher des emprunts des Adherents")
-    print("Appuyez 12 pour afficher des emprunts des Adherents")
-    choix = input()
-    if choix == "1":
-        print("1")
-    elif choix == "2":
-        print("2")
-    else:
-        print("input invalide")
+class Program:
+    def __init__(self):
+        self.user = None
 
-"""choix pour les adherents"""
-def affichage_emprunts():
-    """afficher tous les lignes de emprunts liee a cet utilisateur"""
-    pass
+        self.connection = None
+        self.connect_to_db()
+        if self.connection is None:
+            return
 
-def exemplairesPop():
-    pass
+        while not self.login():
+            pass
 
-def affichageDesGenres():
-    pass
+        self.loop()
 
-"""choix pour les membrePersonnels"""
-def ajouterDesDocuments():
-    pass
+    def connect_to_db(self):
+        """establish connection with postgresql using psycopg2, initialize self. Connection"""
+        try:
+            print("Connect to postgresql...")
+            self.connection = psycopg2.connect(database='testdb',
+                                               user='postgres',
+                                               password='123456',
+                                               host='localhost',
+                                               port='5432')
+            cur = self.connection.cursor()
+            print('Postgresql version: ')
+            cur.execute('select version()')
+            db_version = cur.fetchone()
+            cur.close()
+            print(db_version)
+            print('Connection successful\n\n')
+        except (Exception, psycopg2.DatabaseError) as error:
+            print('Error name: ' + str(error.__class__))
 
-def modifierDesDiscription():
-    pass
+    def login(self) -> bool:
+        """authentication, initialize self. User"""
+        # print(sql_execute(sql='select * from coating;', conn=self.connection, sql_type=SqlType.DQL))
+        role = ''
+        while role != 'M' and role != 'A':
+            role = input(Token.MEMBER.value + ' or ' + Token.ADHERENT.value + '?:M/A')
+        uname = ''
+        while uname == '':
+            uname = input('Username: ')
+        pwd = ''
+        while pwd == '':
+            pwd = input('Password: ')
+        if role == 'M':
+            # TODO
+            sql = ''
+        else:
+            # TODO
+            sql = ''
 
-def ajouterDesExemplaires():
-    pass
+        user_info_list = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
+        # TODO
+        #  if login success we initialize self. User and return True,
+        #  else return False, let __init__ call login again
+        # self.user = User()
+        return False
 
-def gestionDesPrets():
-    pass
+    def loop(self):
+        print('Login success...\n')
 
-def gestionDesSactions():
-    pass
+        while True:
+            if self.user.token is Token.MEMBER:
+                # TODO menu for member user
+                print('Welcome member...')
+            else:
+                # TODO menu for adherent user
+                print('Welcome adherent...')
+
+            choice = input('# ')
+            if choice == '1':
+                # TODO
+                pass
+            elif choice == '2':
+                # TODO
+                pass
+            elif choice == '3':
+                # TODO
+                pass
+            elif choice == '4':
+                # TODO
+                pass
+            elif choice == 'q':
+                print('\nGoodbye\n')
+                return
+            else:
+                print('Input invalid, wrong input: ' + choice)
+
+
+class User:
+    def __init__(self, uname='Unknow', token=Token.ADHERENT):
+        self.uname = uname
+        self.token = token
 
 
 if __name__ == "__main__":
-    conn = connect_to_db()
-    if conn is None:
-        pass
-    else:
-        while uid is None:
-            login()
-        while conn is not None:
-            loop(conn)
+    program = Program()

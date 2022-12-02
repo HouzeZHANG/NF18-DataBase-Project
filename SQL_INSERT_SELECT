@@ -134,38 +134,48 @@ Ajouter des exemplaires d'une Ressource
 INSERT INTO Exemplaire VALUES (etat,disponible,code_oeuvre,code_film,code_livre);
 
 
-Gestion des Prêts par MembrePersonnel
-?
-SELECT OeuvreMusicale.titre, Emprunt.date_pret, Emprunt.date_retour
-FROM Emprunt
-JOIN Exemplaire 
-ON Emprunt.exemplaire=Exemplaire.id
-JOIN OeuvreMusicale 
-ON OeuvreMusicale.code=Exemplaire.code_oeuvre
-WHERE membre_personnel=Emprunt.personnel;
-
-
-Gestion des sanctions par MembrePersonnel
-?
-SELECT OeuvreMusicale.titre, Emprunt.date_pret, Emprunt.date_retour
-FROM Retard
-JOIN Emprunt 
-ON Emprunt.retard=Retard.id
-JOIN Exemplaire 
-ON Emprunt.exemplaire=Exemplaire.id
-JOIN OeuvreMusicale 
-ON OeuvreMusicale.code=Exemplaire.code_oeuvre
-WHERE membre_personnel=Retard.personnel;
-
+Gestion des Prêts par un MembrePersonnel
 SELECT Film.titre, Emprunt.date_pret, Emprunt.date_retour
-FROM Retard
-JOIN Emprunt 
-ON Emprunt.retard=Retard.id
+FROM Emprunt
 JOIN Exemplaire 
 ON Emprunt.exemplaire=Exemplaire.id
 JOIN Film 
 ON Film.code=Exemplaire.code_film
-WHERE membre_personnel=Retard.personnel;
+where Emprunt.personnel='mazir';
+
+
+Gestion des sanctions par MembrePersonnel
+SELECT Livre.titre, Emprunt.date_pret, Emprunt.date_retour, Emprunt.adherent, Retard.personnel
+FROM Retard
+JOIN Emprunt 
+ON Emprunt.retard=Retard.id
+JOIN Exemplaire 
+ON Emprunt.exemplaire=Exemplaire.id
+JOIN Livre 
+ON Livre.code=Exemplaire.code_livre;
+
+SELECT Film.titre, Emprunt.date_pret, Emprunt.date_retour, Emprunt.adherent, Deterioration.personnel
+FROM Deterioration
+JOIN Emprunt 
+ON Emprunt.deterioration=Deterioration.id
+JOIN Exemplaire 
+ON Emprunt.exemplaire=Exemplaire.id
+JOIN Film 
+ON Film.code=Exemplaire.code_film;
+
+SELECT Adherent.nom, Adherent.prenom, Adherent.actif, Deterioration.id
+FROM Adherent
+LEFT JOIN Emprunt
+ON Emprunt.adherent=Adherent.login
+LEFT JOIN Deterioration
+ON Deterioration.id=Emprunt.deterioration;
+
+SELECT Adherent.nom, Adherent.prenom, Adherent.actif, Retard.id
+FROM Adherent
+LEFT JOIN Emprunt
+ON Emprunt.adherent=Adherent.login
+LEFT JOIN Retard
+ON Retard.id=Emprunt.retard;
 
 
 Affichage des données des utilisateurs pour un Adhérent 

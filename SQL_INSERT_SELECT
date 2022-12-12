@@ -266,4 +266,8 @@ SELECT a.login AS Adhérent, e.date_rendu + (e.date_rendu -  e.date_retour) AS D
 FROM Emprunt e 
 JOIN Adherent a
 ON e.adherent=a.login
-WHERE e.date_rendu>e.date_retour
+WHERE e.date_rendu>e.date_retour;
+
+UPDATE Emprunt 
+SET Retard=0
+WHERE NOW()>Finretard.DateDeFin;

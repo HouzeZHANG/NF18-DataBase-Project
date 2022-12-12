@@ -216,6 +216,17 @@ ON Film.titre=PopularitéFilmApple.titre
 WHERE PopularitéFilmApple.titre IS NULL
 AND Film.genre='gangsters'
 GROUP BY Film.titre;
+/*SELECT Film.titre
+FROM Film, GenrePrefFilmApple
+LEFT JOIN PopularitéFilmApple1
+ON Film.titre=PopularitéFilmApple1.titre
+WHERE PopularitéFilmApple1.titre IS NULL
+AND Film.genre=GenrePrefFilmApple.genre
+GROUP BY Film.titre;*/
+/*SELECT PopularitéFilmApple.genre 
+FROM PopularitéFilmApple 
+GROUP BY PopularitéFilmApple.genre 
+ORDER BY (MAX(PopularitéFilmApple.popularité));*/
 
 Les exemplaires populaires
 CREATE VIEW PopularitéFilm AS

@@ -260,3 +260,8 @@ WHERE genre={};
 SELECT *
 FROM OeuvreMusicale
 WHERE genre={};
+
+CREATE VIEW FinRetard AS 
+SELECT TO_DATE(e.date_rendu + e.date_rendu - e.date_retour) AS DateDeFin  
+FROM Emprunt e
+WHERE e.date_rendu>e.date_retour;

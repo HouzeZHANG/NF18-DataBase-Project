@@ -198,7 +198,7 @@ WHERE login='apple';
 
 Les genres populaires pour un adhérent (exemple d'apple Film)
 CREATE VIEW PopularitéFilmApple AS
-SELECT Film.genre, COUNT(*) AS Popularité
+SELECT Film.titre, Film.genre, COUNT(*) AS Popularité
 FROM Emprunt
 JOIN Exemplaire
 ON Exemplaire.id=Emprunt.exemplaire
@@ -210,12 +210,12 @@ ORDER BY Popularité ASC;
 
 Profil des Adhérents (exemple d'apple pour Film)
 SELECT Film.titre
-FROM Film 
+FROM Film
 LEFT JOIN PopularitéFilmApple
-ON Film.genre=PopularitéFilmApple.genre
+ON Film.titre=PopularitéFilmApple.titre
 WHERE PopularitéFilmApple.titre IS NULL
-GROUP BY Film.titre
-ORDER BY MAX(PopularitéFilmApple.genre);
+AND Film.genre='gangsters'
+GROUP BY Film.titre;
 
 Les exemplaires populaires
 CREATE VIEW PopularitéFilm AS

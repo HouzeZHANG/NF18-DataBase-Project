@@ -16,6 +16,7 @@ INSERT INTO OeuvreMusicale VALUES ('LLDCT38', 'Le Lac des cygnes', TO_DATE('1877
 INSERT INTO OeuvreMusicale VALUES ('TDCAU41', 'They Don’t Care About Us', TO_DATE('2011', 'YYYY'), NULL, 'mélange de styles', 'TDC123', '00:04:28');
  
 INSERT INTO Film VALUES ('PULFI96', 'Pulp Fiction', TO_DATE('1994', 'YYYY'), NULL, 'gangsters', 'PUF932', '02:45:00');
+INSERT INTO Film VALUES ('LEPAR91', 'Le Parrain', TO_DATE('1972', 'YYYY'), NULL, 'gangsters', 'LEP893', '02:55:00');
 INSERT INTO Film VALUES ('LGBCN96', 'Le Grand Blond avec une chaussure noire', TO_DATE('1972', 'YYYY'), NULL, 'espionnage parodique', 'LBB1325', '01:30:00');
  
 INSERT INTO Livre VALUES ('LRELN69', 'Le Rouge et le Noir', TO_DATE('1830', 'YYYY'), 'Poche', 'roman' , 'REN699', '978-2253077497', 'L’énergie d’un jeune homme ardent, exigeant et pauvre dans la société de la Restauration.', 'française');
@@ -23,6 +24,17 @@ INSERT INTO Livre VALUES ('AIHDA98', '1984', TO_DATE('1949', 'YYYY'), 'Penguin R
  
 INSERT INTO Exemplaire VALUES ('1', 'neuf', '1', NULL, 'PULFI96', NULL);
 INSERT INTO Exemplaire VALUES ('2', 'bon', '0', NULL, NULL, 'LRELN69');
+INSERT INTO Exemplaire VALUES ('3', 'neuf', '1', NULL, 'PULFI96', NULL);
+INSERT INTO Exemplaire VALUES ('4', 'bon', '1', NULL, 'PULFI96', NULL);
+INSERT INTO Exemplaire VALUES ('5', 'neuf', '1', NULL, 'LEPAR91', NULL);
+INSERT INTO Exemplaire VALUES ('6', 'neuf', '1', NULL, 'LEPAR91', NULL);
+INSERT INTO Exemplaire VALUES ('7', 'neuf', '1', NULL, 'LEPAR91', NULL);
+INSERT INTO Exemplaire VALUES ('8', 'neuf', '1', NULL, NULL, 'LRELN69');
+INSERT INTO Exemplaire VALUES ('9', 'bon', '1', NULL, NULL, 'AIHDA98');
+INSERT INTO Exemplaire VALUES ('10', 'neuf', '1', 'LLDCT38', NULL, NULL);
+INSERT INTO Exemplaire VALUES ('11', 'abîmé', '0', 'LLDCT38', NULL, NULL);
+
+
 
 INSERT INTO Emprunt VALUES ('1', TO_DATE('11-01-2022', 'DD-MM-YYYY'), TO_DATE('11-02-2022', 'DD-MM-YYYY'), TO_DATE('25-01-2022', 'DD-MM-YYYY'), 'mazir', 'apple', NULL, '1');
 INSERT INTO Emprunt VALUES ('2', TO_DATE('04-06-2022', 'DD-MM-YYYY'), TO_DATE('04-07-2022', 'DD-MM-YYYY'), TO_DATE('07-07-2022', 'DD-MM-YYYY'), 'eiro', 'otari', '1', NULL);

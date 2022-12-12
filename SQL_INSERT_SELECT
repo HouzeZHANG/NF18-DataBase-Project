@@ -262,6 +262,8 @@ FROM OeuvreMusicale
 WHERE genre={};
 
 CREATE VIEW FinRetard AS 
-SELECT TO_DATE(e.date_rendu + e.date_rendu - e.date_retour) AS DateDeFin  
-FROM Emprunt e
-WHERE e.date_rendu>e.date_retour;
+SELECT a.login AS Adhérent, e.date_rendu + (e.date_rendu -  e.date_retour) AS DateDeFin  
+FROM Emprunt e 
+JOIN Adherent a
+ON e.adherent=a.login
+WHERE e.date_rendu>e.date_retour

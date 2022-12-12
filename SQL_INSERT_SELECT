@@ -262,11 +262,11 @@ FROM OeuvreMusicale
 WHERE genre={};
 
 CREATE VIEW FinRetard AS 
-SELECT a.login AS Adhérent, e.date_rendu + (e.date_rendu -  e.date_retour) AS DateDeFin  
+SELECT a.login AS Adhérent, e.exemplaire AS Exemplaire e.date_rendu + (e.date_rendu -  e.date_retour) AS DateDeFin  
 FROM Emprunt e 
 JOIN Adherent a
 ON e.adherent=a.login
-WHERE e.date_rendu>e.date_retour;
+WHERE retard=1;
 
 UPDATE Emprunt 
 SET Retard=0

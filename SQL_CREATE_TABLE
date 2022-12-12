@@ -1,3 +1,21 @@
+--suppression des tables au debut pour eviter les conflits de table
+DROP TABLE IF EXISTS Auteur;
+DROP TABLE IF EXISTS Acteur;
+DROP TABLE IF EXISTS Realiser;
+DROP TABLE IF EXISTS Interpreter;
+DROP TABLE IF EXISTS Composer;
+DROP TABLE IF EXISTS Emprunt;
+DROP TABLE IF EXISTS Exemplaire;
+DROP TABLE IF EXISTS Livre;
+DROP TABLE IF EXISTS Film;
+DROP TABLE IF EXISTS OeuvreMusicale;
+DROP TABLE IF EXISTS Deterioration;
+DROP TABLE IF EXISTS Retard;
+DROP TABLE IF EXISTS Contributeur;
+DROP TABLE IF EXISTS MembrePersonnel;
+DROP TABLE IF EXISTS Adherent;
+
+
 CREATE TABLE  Adherent(
     login VARCHAR(100) PRIMARY KEY,
     mdp VARCHAR(100) NOT NULL,

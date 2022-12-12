@@ -47,6 +47,7 @@ INSERT INTO Interpreter VALUES ('Maalouf', 'Ibrahim', 'TDCAU41');
  
 INSERT INTO Realiser VALUES ('Tarantino', 'Quentin', 'PULFI96');
 INSERT INTO Realiser VALUES ('Robert', 'Yves', 'LGBCN96');
+INSERT INTO Realiser VALUES ('Coppola', 'Francis Ford', 'LEPAR91');
  
 INSERT INTO Acteur VALUES ('Travolta', 'John','PULFI96');
 INSERT INTO Acteur VALUES ('Richard', 'Pierre', 'LGBCN96');

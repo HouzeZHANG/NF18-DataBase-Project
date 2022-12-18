@@ -157,7 +157,7 @@ ON Film.code=Exemplaire.code_film
 where Emprunt.personnel='mazir';
 
 
-Gestion des sanctions par MembrePersonnel
+--Gestion des sanctions par MembrePersonnel
 SELECT Livre.titre, Emprunt.date_pret, Emprunt.date_retour, Emprunt.adherent, Retard.personnel
 FROM Retard
 JOIN Emprunt 
@@ -205,7 +205,7 @@ ON Exemplaire.id=Emprunt.exemplaire
 JOIN Film
 ON Exemplaire.code_film=Film.code
 WHERE Emprunt.adherent='apple'
-GROUP BY genre
+GROUP BY genre, titre
 ORDER BY Popularité ASC;
 
 Profil des Adhérents (exemple d'apple pour Film)
@@ -216,17 +216,7 @@ ON Film.titre=PopularitéFilmApple.titre
 WHERE PopularitéFilmApple.titre IS NULL
 AND Film.genre='gangsters'
 GROUP BY Film.titre;
-/*SELECT Film.titre
-FROM Film, GenrePrefFilmApple
-LEFT JOIN PopularitéFilmApple1
-ON Film.titre=PopularitéFilmApple1.titre
-WHERE PopularitéFilmApple1.titre IS NULL
-AND Film.genre=GenrePrefFilmApple.genre
-GROUP BY Film.titre;*/
-/*SELECT PopularitéFilmApple.genre 
-FROM PopularitéFilmApple 
-GROUP BY PopularitéFilmApple.genre 
-ORDER BY (MAX(PopularitéFilmApple.popularité));*/
+--'gangsters' sera récupéré avec le code Python
 
 Les exemplaires populaires
 CREATE VIEW PopularitéFilm AS
@@ -255,7 +245,7 @@ FROM Emprunt
 JOIN Exemplaire
 ON Exemplaire.id=Emprunt.exemplaire
 JOIN Livre
-ON Exemplaire.livre=Livre.code
+ON Exemplaire.code_livre=Livre.code
 GROUP BY titre, genre
 ORDER BY Popularité ASC;
 
@@ -272,13 +262,14 @@ SELECT *
 FROM OeuvreMusicale
 WHERE genre={};
 
+Update des Retards (avec comparaison avec DateDuJour)
 CREATE VIEW FinRetard AS 
-SELECT a.login AS Adhérent, e.exemplaire AS Exemplaire e.date_rendu + (e.date_rendu -  e.date_retour) AS DateDeFin  
-FROM Emprunt e 
-JOIN Adherent a
-ON e.adherent=a.login
+SELECT Adherent.login AS Adhérent, Emprunt.exemplaire AS Exemplaire, Emprunt.retard AS Retard, Emprunt.date_rendu + (Emprunt.date_rendu - Emprunt.date_retour) AS DateDeFin, DATE(NOW()) AS DateDuJour
+FROM Emprunt
+JOIN Adherent
+ON Emprunt.adherent=Adherent.login
 WHERE retard=1;
 
-UPDATE Emprunt 
-SET Retard=0
-WHERE NOW()>Finretard.DateDeFin;
+UPDATE Retard
+SET fin='1'
+WHERE Retard.id=1;

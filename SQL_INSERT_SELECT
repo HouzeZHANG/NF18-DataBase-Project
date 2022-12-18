@@ -54,7 +54,7 @@ INSERT INTO Auteur VALUES ('Beyle', 'Henri', 'LRELN69');
 INSERT INTO Auteur VALUES ('Orwell', 'Georges', 'AIHDA98');
 
  
-*Affichage des Emprunts des Adhérents (exemple : 'apple')
+*Affichage des Emprunts des Adhérents (exemple : 'apple')*
 SELECT Film.titre, Emprunt.date_pret, Emprunt.date_retour
 FROM Emprunt
 JOIN Exemplaire 

@@ -34,8 +34,6 @@ INSERT INTO Exemplaire VALUES ('9', 'bon', '1', NULL, NULL, 'AIHDA98');
 INSERT INTO Exemplaire VALUES ('10', 'neuf', '1', 'LLDCT38', NULL, NULL);
 INSERT INTO Exemplaire VALUES ('11', 'abîmé', '0', 'LLDCT38', NULL, NULL);
 
-
-
 INSERT INTO Emprunt VALUES ('1', TO_DATE('11-01-2022', 'DD-MM-YYYY'), TO_DATE('11-02-2022', 'DD-MM-YYYY'), TO_DATE('25-01-2022', 'DD-MM-YYYY'), 'mazir', 'apple', NULL, '1');
 INSERT INTO Emprunt VALUES ('2', TO_DATE('04-06-2022', 'DD-MM-YYYY'), TO_DATE('04-07-2022', 'DD-MM-YYYY'), TO_DATE('07-07-2022', 'DD-MM-YYYY'), 'eiro', 'otari', '1', NULL);
 INSERT INTO Emprunt VALUES ('2', TO_DATE('25-10-2022', 'DD-MM-YYYY'), TO_DATE('25-11-2022', 'DD-MM-YYYY'), NULL, 'eiro', 'asifflet', NULL, NULL);
@@ -56,7 +54,7 @@ INSERT INTO Auteur VALUES ('Beyle', 'Henri', 'LRELN69');
 INSERT INTO Auteur VALUES ('Orwell', 'Georges', 'AIHDA98');
 
  
-Affichage des Emprunts des Adhérents (exemple : 'apple')
+*Affichage des Emprunts des Adhérents (exemple : 'apple')
 SELECT Film.titre, Emprunt.date_pret, Emprunt.date_retour
 FROM Emprunt
 JOIN Exemplaire 

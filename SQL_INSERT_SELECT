@@ -54,7 +54,7 @@ INSERT INTO Auteur VALUES ('Beyle', 'Henri', 'LRELN69');
 INSERT INTO Auteur VALUES ('Orwell', 'Georges', 'AIHDA98');
 
  
-*Affichage des Emprunts des Adhérents (exemple : 'apple')*
+--Affichage des Emprunts des Adhérents (exemple : 'apple')--
 SELECT Film.titre, Emprunt.date_pret, Emprunt.date_retour
 FROM Emprunt
 JOIN Exemplaire 
@@ -80,7 +80,7 @@ ON Livre.code=Exemplaire.code_livre
 WHERE Emprunt.adherent='apple';
 
 
-Affichage des Exemplaires de tel auteur - réalisateur - compositeur aux Adhérents
+--Affichage des Exemplaires de tel auteur - réalisateur - compositeur aux Adhérents--
 SELECT Livre.titre, Auteur.contrib_nom AS Nom, Auteur.contrib_prenom AS Prénom, COUNT(Exemplaire.id) AS NbExemplaires
 FROM Auteur
 JOIN Livre
@@ -115,7 +115,7 @@ GROUP BY OeuvreMusicale.titre, Composer.contrib_nom, Composer.contrib_prenom
 ORDER BY NbExemplaires ASC;
 
 
-Affichage des Livres - Films - Oeuvres musicales aux Adhérents
+--Affichage des Livres - Films - Oeuvres musicales aux Adhérents--
 SELECT * FROM Livre;
 
 SELECT * FROM Film;
@@ -123,7 +123,7 @@ SELECT * FROM Film;
 SELECT * FROM OeuvreMusicale;
 
 
-Ajouter des documents
+--Ajouter des documents--
 INSERT INTO Livre VALUES (code,titre,date_apparition,editeur,genre,code_classification,ISBN,resume,langue); {pour le programme en python, affectation aux variables}
 
 INSERT INTO Film VALUES (code,titre,date_apparition,editeur,genre,code_classification,longueur,synopsis);
@@ -131,7 +131,7 @@ INSERT INTO Film VALUES (code,titre,date_apparition,editeur,genre,code_classific
 INSERT INTO OeuvreMusicale VALUES(code,titre,date_apparition,editeur,genre,code_classification,longueur);
 
 
-Modifier leur description
+--Modifier leur description--
 UPDATE Film 
 SET synopsis={}
 WHERE code={}
@@ -141,11 +141,11 @@ SET resume={}
 WHERE code={}
 
 
-Ajouter des exemplaires d'une Ressource
+--Ajouter des exemplaires d'une Ressource--
 INSERT INTO Exemplaire VALUES (etat,disponible,code_oeuvre,code_film,code_livre);
 
 
-Gestion des Prêts par un MembrePersonnel
+--Gestion des Prêts par un MembrePersonnel--
 SELECT Film.titre, Emprunt.date_pret, Emprunt.date_retour
 FROM Emprunt
 JOIN Exemplaire 
@@ -155,7 +155,7 @@ ON Film.code=Exemplaire.code_film
 where Emprunt.personnel='mazir';
 
 
---Gestion des sanctions par MembrePersonnel
+--Gestion des sanctions par MembrePersonnel--
 SELECT Livre.titre, Emprunt.date_pret, Emprunt.date_retour, Emprunt.adherent, Retard.personnel
 FROM Retard
 JOIN Emprunt 
@@ -189,12 +189,12 @@ LEFT JOIN Retard
 ON Retard.id=Emprunt.retard;
 
 
-Affichage des données des utilisateurs pour un Adhérent 
+--Affichage des données des utilisateurs pour un Adhérent-- 
 SELECT nom, prenom, date_naissance, code_postal, adresse_rue, ville, adresse_mail, num_tel, actif, droit_emprunt
 FROM Adherent
 WHERE login='apple';
 
-Les genres populaires pour un adhérent (exemple d'apple Film)
+--Les genres populaires pour un adhérent (exemple d'apple Film)--
 CREATE VIEW PopularitéFilmApple AS
 SELECT Film.titre, Film.genre, COUNT(*) AS Popularité
 FROM Emprunt
@@ -206,7 +206,7 @@ WHERE Emprunt.adherent='apple'
 GROUP BY genre, titre
 ORDER BY Popularité ASC;
 
-Profil des Adhérents (exemple d'apple pour Film)
+--Profil des Adhérents (exemple d'apple pour Film)--
 SELECT Film.titre
 FROM Film
 LEFT JOIN PopularitéFilmApple
@@ -216,7 +216,7 @@ AND Film.genre='gangsters'
 GROUP BY Film.titre;
 --'gangsters' sera récupéré avec le code Python
 
-Les exemplaires populaires
+--Les exemplaires populaires--
 CREATE VIEW PopularitéFilm AS
 SELECT Film.titre, Film.genre, COUNT(*) AS Popularité
 FROM Emprunt
@@ -247,7 +247,7 @@ ON Exemplaire.code_livre=Livre.code
 GROUP BY titre, genre
 ORDER BY Popularité ASC;
 
-Affichage des genres
+--Affichage des genres--
 SELECT *
 FROM Livre
 WHERE genre={};
@@ -260,7 +260,7 @@ SELECT *
 FROM OeuvreMusicale
 WHERE genre={};
 
-Update des Retards (avec comparaison avec DateDuJour)
+--Update des Retards (avec comparaison avec DateDuJour)--
 CREATE VIEW FinRetard AS 
 SELECT Adherent.login AS Adhérent, Emprunt.exemplaire AS Exemplaire, Emprunt.retard AS Retard, Emprunt.date_rendu + (Emprunt.date_rendu - Emprunt.date_retour) AS DateDeFin, DATE(NOW()) AS DateDuJour
 FROM Emprunt

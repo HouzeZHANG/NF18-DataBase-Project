@@ -254,7 +254,7 @@ SELECT  Adherent.login                                                  AS Adhé
 FROM Emprunt
 JOIN Adherent
 ON Emprunt.adherent = Adherent.login
-WHERE retard = 1; UPDATE Retard
+WHERE retard = 1; 
 
 UPDATE Retard
 SET fin = '1'

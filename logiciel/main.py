@@ -250,7 +250,7 @@ class Program:
                     ON Emprunt.exemplaire = Exemplaire.id
                     JOIN Livre
                     ON Livre.code = Exemplaire.code_livre
-                    WHERE Emprunt.adherent = '{0}';;
+                    WHERE Emprunt.adherent = '{0}';
                     """.format(self.user.uname)
                     emprunt_of_livre = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
                     print(emprunt_of_livre)

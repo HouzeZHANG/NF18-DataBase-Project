@@ -259,3 +259,7 @@ WHERE retard = 1;
 UPDATE Retard
 SET fin = '1'
 WHERE Retard.id = 1; 
+
+UPDATE Adherent
+SET droit_emprunt = 'True'
+WHERE Adherent.login = 'otari'; 

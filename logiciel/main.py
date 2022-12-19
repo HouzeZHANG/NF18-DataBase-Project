@@ -177,7 +177,7 @@ class Program:
             if self.user.token is Token.MEMBRE:
                 print('Bienvenue...')
                 print('Entrez 1 pour gérer les prêts des adhérents')
-                print('Entrez 2 pour gérer les sanctions des adhérents')
+                print('Entrez 2 pour gérer les retards des adhérents')
                 print('Entrez 3 pour mettre à jour les retards')
                 print('Entrez q pour quitter')
                 

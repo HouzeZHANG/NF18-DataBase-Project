@@ -65,6 +65,11 @@ def sql_execute(sql, conn, sql_type: SqlType, error_message=None) -> list:
             print('ERROR: ' + str(error.__class__))
 
 def res_print(ls: list):
+    """_summary_
+
+    Args:
+        ls (list): 
+    """
     print("\n---SQL result: ---\n")
     if not ls:
         print("0 rows founded")
@@ -171,11 +176,12 @@ class Program:
                 print('Bienvenue...')
                 print('Entrez 1 pour gérer les prêts des adhérents')
                 print('Entrez 2 pour gérer les sanctions des adhérents')
-                print ('Entrez 3 pour mettre à jour les retards')
+                print('Entrez 3 pour mettre à jour les retards')
                 print('Entrez q pour quitter')
                 
                 choice = input('# ')
                 if choice == '1':
+                    
                     sql = """
                     SELECT  Film.titre, Emprunt.date_pret, Emprunt.date_retour
                     FROM Emprunt
@@ -186,7 +192,9 @@ class Program:
                     WHERE Emprunt.personnel = '{0}';
                     """.format(self.user.uname)
                     films = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
-                    print(films)
+                    print("\n---Films dans le biblo---")
+                    res_print(films)
+                    
                     sql = """
                     SELECT  Livre.titre, Emprunt.date_pret, Emprunt.date_retour
                     FROM Emprunt
@@ -199,12 +207,13 @@ class Program:
                     livres = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
                     print("\n---Livres dans le biblo---")
                     res_print(livres)
+                    
                 elif choice == '2':
                     pass
                 elif choice == 'q':
                     return
                 else:
-                    print('Valeur invalide : ' + choice)
+                    print('Invalid input : ' + choice)
 
             elif self.user.token is Token.ADHERENT:
                 print('Bienvenue...')
@@ -254,12 +263,14 @@ class Program:
                     WHERE Emprunt.adherent = '{0}';
                     """.format(self.user.uname)
                     emprunt_of_livre = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
-                    print(emprunt_of_livre)
+                    print("\n---Empruntes de livres---")
+                    res_print(emprunt_of_livre)
+                    
                 elif choice == '2':
                     nom = input("donnez le nom du contributeur (Auteur, Compositeur ou Acteur) : ")
                     prenom = input("donnez le prénom nom du contributeur (Auteur, Compositeur ou Acteur) : ")
-                    type = input("livre, oeuvre ou film : ")
-                    if type == 'oeuvre' :
+                    t = input("livre, oeuvre ou film : ")
+                    if t == 'oeuvre' :
                         sql = """
                         SELECT  OeuvreMusicale.titre,Composer.contrib_nom AS Nom,Composer.contrib_prenom AS Prénom,COUNT(Exemplaire.id)    AS NbExemplaires
                         FROM Composer
@@ -267,14 +278,16 @@ class Program:
                         ON Composer.code = OeuvreMusicale.code
                         JOIN Exemplaire
                         ON OeuvreMusicale.code = Exemplaire.code_oeuvre
-                        WHERE Composer.contrib_nom = '{nom}'
-                        AND Composer.contrib_prenom = '{prenom}'
+                        WHERE Composer.contrib_nom = '{0}'
+                        AND Composer.contrib_prenom = '{1}'
                         GROUP BY  OeuvreMusicale.titre,Composer.contrib_nom,Composer.contrib_prenom
                         ORDER BY NbExemplaires ASC;
-                        """
+                        """.format(nom, prenom)
                         oeuvre = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
-                        print(oeuvre)
-                    elif type == 'film' :
+                        print("\n---Oeuvres trouves---")
+                        res_print(oeuvre)
+
+                    elif t == 'film' :
                         sql = """
                         SELECT  Film.titre,Acteur.contrib_nom AS Nom,Acteur.contrib_prenom AS Prénom,COUNT(Exemplaire.id)  AS NbExemplaires
                         FROM Acteur
@@ -282,14 +295,16 @@ class Program:
                         ON Acteur.code = Film.code
                         JOIN Exemplaire
                         ON Film.code = Exemplaire.code_film
-                        WHERE Acteur.contrib_nom = '{nom}'
-                        AND Acteur.contrib_prenom = '{prenom}'
+                        WHERE Acteur.contrib_nom = '{0}'
+                        AND Acteur.contrib_prenom = '{1}'
                         GROUP BY  Film.titre,Acteur.contrib_nom,Acteur.contrib_prenom
                         ORDER BY NbExemplaires ASC;
-                        """
+                        """.format(nom, prenom)
                         film = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
-                        print(film)
-                    elif type == 'livre' :
+                        print("\n---Films trouves---")
+                        res_print(film)
+
+                    elif t == 'livre' :
                         sql = """
                         SELECT  Livre.titre,Auteur.contrib_nom AS Nom,Auteur.contrib_prenom AS Prénom,COUNT(Exemplaire.id)  AS NbExemplaires
                         FROM Auteur
@@ -297,14 +312,17 @@ class Program:
                         ON Auteur.code = Livre.code
                         JOIN Exemplaire
                         ON Livre.code = Exemplaire.code_livre
-                        WHERE Auteur.contrib_nom = '{nom}'
-                        AND Auteur.contrib_prenom = '{prenom}'
+                        WHERE Auteur.contrib_nom = '{0}'
+                        AND Auteur.contrib_prenom = '{1}'
                         GROUP BY  Livre.titre,Auteur.contrib_nom,Auteur.contrib_prenom
                         ORDER BY NbExemplaires ASC;
-                        """
+                        """.format(nom, prenom)
                         livre = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
-                        print(livre)
+                        print("\n---Livres trouves---")
+                        res_print(livre)
+                        
                 elif choice == '3':
+                    
                     sql = """
                     SELECT  Film.titre, Film.genre, COUNT(*) AS Popularité
                     FROM Emprunt
@@ -316,7 +334,9 @@ class Program:
                     ORDER BY Popularité ASC;
                     """
                     films_populaires = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
-                    print(films_populaires)
+                    print("\n---Films populaires---")
+                    res_print(films_populaires)
+                    
                     sql = """
                     SELECT  OeuvreMusicale.titre, OeuvreMusicale.genre, COUNT(*) AS Popularité
                     FROM Emprunt
@@ -328,7 +348,9 @@ class Program:
                     ORDER BY Popularité ASC;
                     """
                     oeuvres_populaires = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
-                    print(oeuvres_populaires)
+                    print("\n---Oeuvres populaires---")
+                    res_print(oeuvres_populaires)
+                    
                     sql = """
                     SELECT  Livre.titre, Livre.genre, COUNT(*) AS Popularité
                     FROM Emprunt
@@ -340,7 +362,9 @@ class Program:
                     ORDER BY Popularité ASC;
                     """
                     livres_populaires = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
-                    print(livres_populaires)
+                    print("\n---Livres populaires---")
+                    res_print(livres_populaires)
+
                 elif choice == '4':
                     sql = """
                     CREATE VIEW PopularitéFilm AS 
@@ -350,7 +374,7 @@ class Program:
                     ON Exemplaire.id = Emprunt.exemplaire
                     JOIN Film
                     ON Exemplaire.code_film = Film.code
-                    WHERE Emprunt.adherent = '{0}'
+                    WHERE Emprunt.adherent = 'apple'
                     GROUP BY  genre,titre
                     ORDER BY Popularité ASC;
                     """.format(self.user.uname)
@@ -366,7 +390,9 @@ class Program:
                     GROUP BY  Film.titre;
                     """.format(genre)
                     films_populaires = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
-                    print(films_populaires)
+                    print("\n---Films populaires---")
+                    res_print(films_populaires)
+                    
                 elif choice == '5' :
                     sql = """
                     CREATE VIEW PopularitéLivre AS 
@@ -380,7 +406,13 @@ class Program:
                     GROUP BY  genre,titre
                     ORDER BY Popularité ASC;
                     """.format(self.user.uname)
+                    
                     genre = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
+                    if not genre:
+                        print("\n---Livres Populaires---")
+                        res_print(genre)
+                        return
+                    
                     genre = genre[0][1]
                     sql = """
                     SELECT  Livre.titre
@@ -392,7 +424,9 @@ class Program:
                     GROUP BY  Livre.titre;
                     """.format(genre)
                     livres_populaires = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
-                    print(livres_populaires)
+                    print("\n---Livres Populaires---")
+                    res_print(livres_populaires)
+
                 elif choice == '6' :
                     sql = """
                     CREATE VIEW PopularitéOeuvre AS 
@@ -406,7 +440,13 @@ class Program:
                     GROUP BY  genre,titre
                     ORDER BY Popularité ASC;
                     """.format(self.user.uname)
+                    
                     genre = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
+                    if not genre:
+                        print("\n---Oeuvres Musicales---")
+                        res_print(genre)
+                        return
+                    
                     genre = genre[0][1]
                     sql = """
                     SELECT  OeuvreMusicale.titre
@@ -418,7 +458,9 @@ class Program:
                     GROUP BY  OeuvreMusicale.titre;
                     """.format(genre)
                     oeuvres_populaires = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
-                    print(oeuvres_populaires)
+                    print("\n---Oeuvres Musicales---")
+                    res_print(oeuvres_populaires)
+                    
                 elif choice == 'q':
                     print('\nAu revoir\n')
                     return

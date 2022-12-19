@@ -223,7 +223,7 @@ class Program:
                     res_print(retards)
 
                 elif choice == '3':
-                    id_retard = int(input('Entrez l"id du retard auquel vous souhaitez mettre fin :'))
+                    id_retard = input('Entrez l"id du retard auquel vous souhaitez mettre fin :')
                     sql = """
                     UPDATE Retard
                     SET fin = '1'
@@ -231,7 +231,24 @@ class Program:
                     """.format(id_retard)
                     maj_retard = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
                     print("\n---Mis à jour des retards---")
-                    res_print(maj_retard)
+                    #res_print(maj_retard)
+
+                    sql = """
+                    SELECT adherent
+                    FROM Emprunt
+                    WHERE retard='{0}'
+                    """.format(id_retard)
+                    login_adherent = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
+
+                    #mis a jour droit emprunt
+                    sql = """
+                    UPDATE Adherent
+                    SET Adhrent.droit_emprunt='True'
+                    WHERE Adherent.login = '{0}';
+                    """.format(login_adherent[0])
+                    maj_droit_emprunt = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
+                    #print("\n---Mis à jour des retards---")
+                    #res_print(maj_retard)
 
                 elif choice == 'q':
                     print('\nAu revoir\n')

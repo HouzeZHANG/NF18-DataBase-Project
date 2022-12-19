@@ -381,19 +381,23 @@ class Program:
                     ORDER BY Popularite ASC;
                     """.format(self.user.uname)
                     genre = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
-                    genre = genre[0][1]
-                    sql = """
-                    SELECT  Film.titre
-                    FROM Film
-                    LEFT JOIN PopulariteFilm
-                    ON Film.titre = PopulariteFilm.titre
-                    WHERE PopulariteFilm.titre IS NULL 
-                    AND Film.genre = '{0}'
-                    GROUP BY  Film.titre;
-                    """.format(genre)
-                    films_populaires = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
-                    print("\n---Suggestions de films---")
-                    res_print(films_populaires)
+                    if not genre :
+                        print("Aucune suggestion à vous proposer."
+                        "Si vous le souhaitez, il est possibe d'afficher les oeuvres par ordre de popularité.")
+                    else :
+                        genre = genre[0][1]
+                        sql = """
+                        SELECT  Film.titre
+                        FROM Film
+                        LEFT JOIN PopulariteFilm
+                        ON Film.titre = PopulariteFilm.titre
+                        WHERE PopulariteFilm.titre IS NULL 
+                        AND Film.genre = '{0}'
+                        GROUP BY  Film.titre;
+                        """.format(genre)
+                        films_populaires = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
+                        print("\n---Suggestions de films---")
+                        res_print(films_populaires)
                     
                 elif choice == '5' :
                     sql = """
@@ -410,24 +414,23 @@ class Program:
                     """.format(self.user.uname)
                     
                     genre = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
-                    if not genre:
-                        print("\n---Suggestion de genre de livres---")
-                        res_print(genre)
-                        return
-                    
-                    genre = genre[0][1]
-                    sql = """
-                    SELECT  Livre.titre
-                    FROM Livre
-                    LEFT JOIN PopulariteLivre
-                    ON Livre.titre = PopulariteLivre.titre
-                    WHERE PopulariteLivre.titre IS NULL 
-                    AND Livre.genre = '{0}'
-                    GROUP BY  Livre.titre;
-                    """.format(genre)
-                    livres_populaires = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
-                    print("\n---Suggestions de livres---")
-                    res_print(livres_populaires)
+                    if not genre :
+                        print("Aucune suggestion à vous proposer."
+                        "Si vous le souhaitez, il est possibe d'afficher les oeuvres par ordre de popularité.")
+                    else :  
+                        genre = genre[0][1]
+                        sql = """
+                        SELECT  Livre.titre
+                        FROM Livre
+                        LEFT JOIN PopulariteLivre
+                        ON Livre.titre = PopulariteLivre.titre
+                        WHERE PopulariteLivre.titre IS NULL 
+                        AND Livre.genre = '{0}'
+                        GROUP BY  Livre.titre;
+                        """.format(genre)
+                        livres_populaires = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
+                        print("\n---Suggestions de livres---")
+                        res_print(livres_populaires)
 
                 elif choice == '6' :
                     sql = """
@@ -444,24 +447,23 @@ class Program:
                     """.format(self.user.uname)
                     
                     genre = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
-                    if not genre:
-                        print("\n---Suggestion de genre d'oeuvres musicales---")
-                        res_print(genre)
-                        return
-                    
-                    genre = genre[0][1]
-                    sql = """
-                    SELECT  OeuvreMusicale.titre
-                    FROM OeuvreMusicale
-                    LEFT JOIN PopulariteOeuvre
-                    ON OeuvreMusicale.titre = PopulariteOeuvre.titre
-                    WHERE PopulariteOeuvre.titre IS NULL 
-                    AND Livre.genre = '{0}'
-                    GROUP BY  OeuvreMusicale.titre;
-                    """.format(genre)
-                    oeuvres_populaires = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
-                    print("\n---Suggestions d'oeuvres musicales---")
-                    res_print(oeuvres_populaires)
+                    if not genre :
+                        print("Aucune suggestion à vous proposer."
+                        "Si vous le souhaitez, il est possibe d'afficher les oeuvres par ordre de popularité.")
+                    else :
+                        genre = genre[0][1]
+                        sql = """
+                        SELECT  OeuvreMusicale.titre
+                        FROM OeuvreMusicale
+                        LEFT JOIN PopulariteOeuvre
+                        ON OeuvreMusicale.titre = PopulariteOeuvre.titre
+                        WHERE PopulariteOeuvre.titre IS NULL 
+                        AND Livre.genre = '{0}'
+                        GROUP BY  OeuvreMusicale.titre;
+                        """.format(genre)
+                        oeuvres_populaires = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
+                        print("\n---Suggestions d'oeuvres musicales---")
+                        res_print(oeuvres_populaires)
                     
                 elif choice == 'q':
                     print('\nAu revoir\n')

@@ -256,5 +256,6 @@ JOIN Adherent
 ON Emprunt.adherent = Adherent.login
 WHERE retard = 1; UPDATE Retard
 
+UPDATE Retard
 SET fin = '1'
 WHERE Retard.id = 1; 

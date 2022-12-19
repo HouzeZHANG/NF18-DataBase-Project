@@ -376,7 +376,7 @@ class Program:
                     ON Exemplaire.id = Emprunt.exemplaire
                     JOIN Film
                     ON Exemplaire.code_film = Film.code
-                    WHERE Emprunt.adherent = 'apple'
+                    WHERE Emprunt.adherent = '{0}'
                     GROUP BY  genre,titre
                     ORDER BY Popularite ASC;
                     """.format(self.user.uname)

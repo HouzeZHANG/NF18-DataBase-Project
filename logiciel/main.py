@@ -223,8 +223,7 @@ class Program:
                     res_print(retards)
 
                 elif choice == '3':
-                    id_retard = input('Entrez l"id du retard auquel vous souhaitez mettre fin :')
-
+                    id_retard = int(input('Entrez l"id du retard auquel vous souhaitez mettre fin :'))
                     sql = """
                     UPDATE Retard
                     SET fin = '1'

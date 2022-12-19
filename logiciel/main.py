@@ -229,7 +229,7 @@ class Program:
                     SET fin = '1'
                     WHERE Retard.id = {0};
                     """.format(id_retard)
-                    maj_retard = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
+                    maj_retard = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DML)
                     print("\n---Mis à jour des retards---")
                     #res_print(maj_retard)
 
@@ -246,7 +246,7 @@ class Program:
                     SET Adhrent.droit_emprunt='True'
                     WHERE Adherent.login = '{0}';
                     """.format(login_adherent[0])
-                    maj_droit_emprunt = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
+                    maj_droit_emprunt = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DML)
                     #print("\n---Mis à jour des retards---")
                     #res_print(maj_retard)
 

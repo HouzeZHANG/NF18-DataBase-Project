@@ -1,0 +1,10 @@
+{
+    "configurations": [
+        {
+            "type": "python",
+            "name": "nf18",
+            "arguments": ["./logiciel/main.py"],
+        },
+
+    ]
+}

@@ -7,21 +7,19 @@ Subject: library management system
 import psycopg2
 from enum import Enum
 
-
 class Token(Enum):
-    """_summary_
-    Token enumaration shows the identification of the user, in this program 
-    we have two cases, Adherent means visitors of the library, Member means
-    librarians. Those two kinds of users have different authorities. 
+    """
+    Token enumaration shows the identification of the user, Membre et Adhérent,
+    those two kinds of users have different authorities. 
     """
     ADHERENT = 'Adherent'
-    MEMBER = 'Member'
+    MEMBRE = 'Membre'
 
 
 class SqlType(Enum):
-    """_summary_
+    """
     SqlType enumaration shows the type of the sql request. In this project
-    we wiil use two different type of SQL: DML and DQL
+    we will use two different type of SQL: DML and DQL
     (DML https://en.wikipedia.org/wiki/Data_manipulation_language and 
     DQL https://en.wikipedia.org/wiki/Data_query_language), 
     and as we all know DML needs COMMIT and ROLLBACK which are always 
@@ -34,7 +32,7 @@ class SqlType(Enum):
 
 
 def sql_execute(sql, conn, sql_type: SqlType, error_message=None) -> list:
-    """_summary_
+    """
     Method to execute sql requests, using strategy pattern
     
     Args:
@@ -80,7 +78,7 @@ def res_print(ls: list):
 
 
 class Program:
-    """_summary_
+    """
     Basic class to represent the whole program.
     Don't forget to change the parameters in the connect_to_db function.
     """
@@ -98,13 +96,8 @@ class Program:
         print('Bye...')
 
     def connect_to_db(self):
-        """_summary_
-
-        Returns:
-            _type_: _description_
-        """
         try:
-            print("Connect to postgresql...")
+            print("Connection à postgresql...")
             
             # you should change the target database name, username and password
             self.connection = psycopg2.connect(database='nf18',
@@ -118,24 +111,23 @@ class Program:
             db_version = cur.fetchone()
             cur.close()
             print(db_version)
-            print('Connection successful\n\n')
+            print('Connection réussie\n\n')
             return True
         except (Exception, psycopg2.DatabaseError) as error:
-            print('Error name: ' + str(error.__class__))
-            print("Database connection failure")
+            print('Erreur de type : ' + str(error.__class__))
+            print("Echec de la connexion à la base de données")
             return False
 
     def login(self) -> bool:
-        """_summary_
-
+        """
         Returns:
             bool: return True when login succeeded, return False when login failed
         """
         # print(sql_execute(sql='select * from coating;', conn=self.connection, sql_type=SqlType.DQL))
         while self.user.token is None:
-            role_str = input(Token.MEMBER.value + ' or ' + Token.ADHERENT.value + '?:M/A :')
+            role_str = input(Token.MEMBRE.value + ' or ' + Token.ADHERENT.value + '?:M/A :')
             if role_str == 'M':
-                self.user.token = Token.MEMBER
+                self.user.token = Token.MEMBRE
             elif role_str == 'A':
                 self.user.token = Token.ADHERENT
         
@@ -151,8 +143,7 @@ class Program:
             sql = """select * from Adherent 
             where login = '{0}' and mdp = '{1}'
             """.format(self.user.uname, pwd)
-        elif self.user.token == Token.MEMBER:
-            # TODO
+        elif self.user.token == Token.MEMBRE:
             sql = """
             select * from membrepersonnel
             where login = '{0}' and mdp = '{1}'
@@ -162,28 +153,49 @@ class Program:
 
         user_info_list = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
         if not user_info_list:
-            print("username or password not correct, please try again")
-            self.user.uname, self.user.token = None, None
+            print("Nom d'utilisateur ou mot de passe inccorecte, veuillez réessayer")
+            self.user.uname = None
+            self.user.token = None
             return False
         elif len(user_info_list) > 1:
             self.user.uname, self.user.token = None, None
             return False
         else:
-            print("Welcome " + self.user.token.value + ": " + user_info_list[0][2])
+            print("Bienvenue " + self.user.token.value + ": " + user_info_list[0][2])
             return True
 
     def loop(self):
-        print('Login successfully...\n')
+        print('Connexion réussie...\n')
         while True:
-            if self.user.token is Token.MEMBER:
-                # TODO menu for member user
-                print('Welcome member...')
-                print('Enter 1 for <Affichage des livres>')
-                print('Enter q to quit')
+            if self.user.token is Token.MEMBRE:
+                print('Bienvenue...')
+                print('Entrez 1 pour gérer les prêts des adhérents')
+                print('Entrez 2 pour gérer les sanctions des adhérents')
+                print ('Entrez 3 pour mettre à jour les retards')
+                print('Entrez q pour quitter')
                 
                 choice = input('# ')
                 if choice == '1':
-                    sql = """select * from Livre;"""
+                    sql = """
+                    SELECT  Film.titre, Emprunt.date_pret, Emprunt.date_retour
+                    FROM Emprunt
+                    JOIN Exemplaire
+                    ON Emprunt.exemplaire = Exemplaire.id
+                    JOIN Film
+                    ON Film.code = Exemplaire.code_film
+                    WHERE Emprunt.personnel = '{0}';
+                    """.format(self.user.uname)
+                    films = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
+                    print(films)
+                    sql = """
+                    SELECT  Livre.titre, Emprunt.date_pret, Emprunt.date_retour
+                    FROM Emprunt
+                    JOIN Exemplaire
+                    ON Emprunt.exemplaire = Exemplaire.id
+                    JOIN Livre
+                    ON Livre.code = Exemplaire.code_livre
+                    WHERE Emprunt.personnel = '{0}';
+                    """.format(self.user.uname)
                     livres = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
                     print("\n---Livres dans le biblo---")
                     res_print(livres)
@@ -192,14 +204,17 @@ class Program:
                 elif choice == 'q':
                     return
                 else:
-                    print('Input invalid, wrong input: ' + choice)
+                    print('Valeur invalide : ' + choice)
 
             elif self.user.token is Token.ADHERENT:
-                # TODO menu for adherent user
-                print('Welcome adherent...')
-                print('Enter 1 for <Affichage des Emprunts des Adhérents (exemple : "apple")>')
-                print('Enter 2 for <Affichage des livres>')
-                print('Enter q to quit')
+                print('Bienvenue...')
+                print('Entrez 1 pour afficher vos emprunts')
+                print('Entrez 2 pour rechercher les oeuvres d''un contributeur')
+                print('Entrez 3 pour afficher les oeuvres par ordre de popularité')
+                print('Entrez 4 si vous souhaitez des suggestions de films qui pourraient vous plaire')
+                print('Entrez 5 si vous souhaitez des suggestions de livres qui pourraient vous plaire')
+                print('Entrez 6 si vous souhaitez des suggestions d''oeuvres musicales qui pourraient vous plaire')
+                print('Entrez q pour quitter')
 
                 choice = input('# ')
                 if choice == '1':
@@ -239,23 +254,176 @@ class Program:
                     WHERE Emprunt.adherent = '{0}';
                     """.format(self.user.uname)
                     emprunt_of_livre = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
-                    print("\n---Empruntes de livres---")
-                    res_print(emprunt_of_livre)
-                    
-                elif choice == 'q':
-                    return
+                    print(emprunt_of_livre)
                 elif choice == '2':
-                    sql = """select * from Livre;"""
-                    livres = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
-                    print(livres)
+                    nom = input("donnez le nom du contributeur (Auteur, Compositeur ou Acteur) : ")
+                    prenom = input("donnez le prénom nom du contributeur (Auteur, Compositeur ou Acteur) : ")
+                    type = input("livre, oeuvre ou film : ")
+                    if type == 'oeuvre' :
+                        sql = """
+                        SELECT  OeuvreMusicale.titre,Composer.contrib_nom AS Nom,Composer.contrib_prenom AS Prénom,COUNT(Exemplaire.id)    AS NbExemplaires
+                        FROM Composer
+                        JOIN OeuvreMusicale
+                        ON Composer.code = OeuvreMusicale.code
+                        JOIN Exemplaire
+                        ON OeuvreMusicale.code = Exemplaire.code_oeuvre
+                        WHERE Composer.contrib_nom = '{nom}'
+                        AND Composer.contrib_prenom = '{prenom}'
+                        GROUP BY  OeuvreMusicale.titre,Composer.contrib_nom,Composer.contrib_prenom
+                        ORDER BY NbExemplaires ASC;
+                        """
+                        oeuvre = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
+                        print(oeuvre)
+                    elif type == 'film' :
+                        sql = """
+                        SELECT  Film.titre,Acteur.contrib_nom AS Nom,Acteur.contrib_prenom AS Prénom,COUNT(Exemplaire.id)  AS NbExemplaires
+                        FROM Acteur
+                        JOIN Film
+                        ON Acteur.code = Film.code
+                        JOIN Exemplaire
+                        ON Film.code = Exemplaire.code_film
+                        WHERE Acteur.contrib_nom = '{nom}'
+                        AND Acteur.contrib_prenom = '{prenom}'
+                        GROUP BY  Film.titre,Acteur.contrib_nom,Acteur.contrib_prenom
+                        ORDER BY NbExemplaires ASC;
+                        """
+                        film = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
+                        print(film)
+                    elif type == 'livre' :
+                        sql = """
+                        SELECT  Livre.titre,Auteur.contrib_nom AS Nom,Auteur.contrib_prenom AS Prénom,COUNT(Exemplaire.id)  AS NbExemplaires
+                        FROM Auteur
+                        JOIN Livre
+                        ON Auteur.code = Livre.code
+                        JOIN Exemplaire
+                        ON Livre.code = Exemplaire.code_livre
+                        WHERE Auteur.contrib_nom = '{nom}'
+                        AND Auteur.contrib_prenom = '{prenom}'
+                        GROUP BY  Livre.titre,Auteur.contrib_nom,Auteur.contrib_prenom
+                        ORDER BY NbExemplaires ASC;
+                        """
+                        livre = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
+                        print(livre)
+                elif choice == '3':
+                    sql = """
+                    SELECT  Film.titre, Film.genre, COUNT(*) AS Popularité
+                    FROM Emprunt
+                    JOIN Exemplaire
+                    ON Exemplaire.id = Emprunt.exemplaire
+                    JOIN Film
+                    ON Exemplaire.code_film = Film.code
+                    GROUP BY  titre, genre
+                    ORDER BY Popularité ASC;
+                    """
+                    films_populaires = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
+                    print(films_populaires)
+                    sql = """
+                    SELECT  OeuvreMusicale.titre, OeuvreMusicale.genre, COUNT(*) AS Popularité
+                    FROM Emprunt
+                    JOIN Exemplaire
+                    ON Exemplaire.id = Emprunt.exemplaire
+                    JOIN OeuvreMusicale
+                    ON Exemplaire.code_oeuvre = OeuvreMusicale.code
+                    GROUP BY  titre, genre
+                    ORDER BY Popularité ASC;
+                    """
+                    oeuvres_populaires = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
+                    print(oeuvres_populaires)
+                    sql = """
+                    SELECT  Livre.titre, Livre.genre, COUNT(*) AS Popularité
+                    FROM Emprunt
+                    JOIN Exemplaire
+                    ON Exemplaire.id = Emprunt.exemplaire
+                    JOIN Livre
+                    ON Exemplaire.code_livre = Livre.code
+                    GROUP BY  titre, genre
+                    ORDER BY Popularité ASC;
+                    """
+                    livres_populaires = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
+                    print(livres_populaires)
                 elif choice == '4':
-                    # TODO
-                    pass
+                    sql = """
+                    CREATE VIEW PopularitéFilm AS 
+                    SELECT  Film.titre, Film.genre,COUNT(*) AS Popularité
+                    FROM Emprunt
+                    JOIN Exemplaire
+                    ON Exemplaire.id = Emprunt.exemplaire
+                    JOIN Film
+                    ON Exemplaire.code_film = Film.code
+                    WHERE Emprunt.adherent = '{0}'
+                    GROUP BY  genre,titre
+                    ORDER BY Popularité ASC;
+                    """.format(self.user.uname)
+                    genre = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
+                    genre = genre[0][1]
+                    sql = """
+                    SELECT  Film.titre
+                    FROM Film
+                    LEFT JOIN PopularitéFilm
+                    ON Film.titre = PopularitéFilm.titre
+                    WHERE PopularitéFilm.titre IS NULL 
+                    AND Film.genre = '{0}'
+                    GROUP BY  Film.titre;
+                    """.format(genre)
+                    films_populaires = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
+                    print(films_populaires)
+                elif choice == '5' :
+                    sql = """
+                    CREATE VIEW PopularitéLivre AS 
+                    SELECT  Livre.titre, Livre.genre,COUNT(*) AS Popularité
+                    FROM Emprunt
+                    JOIN Exemplaire
+                    ON Exemplaire.id = Emprunt.exemplaire
+                    JOIN Livre
+                    ON Exemplaire.code_livre = Livre.code
+                    WHERE Emprunt.adherent = '{0}'
+                    GROUP BY  genre,titre
+                    ORDER BY Popularité ASC;
+                    """.format(self.user.uname)
+                    genre = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
+                    genre = genre[0][1]
+                    sql = """
+                    SELECT  Livre.titre
+                    FROM Livre
+                    LEFT JOIN PopularitéLivre
+                    ON Livre.titre = PopularitéLivre.titre
+                    WHERE PopularitéLivre.titre IS NULL 
+                    AND Livre.genre = '{0}'
+                    GROUP BY  Livre.titre;
+                    """.format(genre)
+                    livres_populaires = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
+                    print(livres_populaires)
+                elif choice == '6' :
+                    sql = """
+                    CREATE VIEW PopularitéOeuvre AS 
+                    SELECT  OeuvreMusicale.titre, OeuvreMusicale.genre,COUNT(*) AS Popularité
+                    FROM Emprunt
+                    JOIN Exemplaire
+                    ON Exemplaire.id = Emprunt.exemplaire
+                    JOIN OeuvreMusicale
+                    ON Exemplaire.code_oeuvre = OeuvreMusicale.code
+                    WHERE Emprunt.adherent = '{0}'
+                    GROUP BY  genre,titre
+                    ORDER BY Popularité ASC;
+                    """.format(self.user.uname)
+                    genre = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
+                    genre = genre[0][1]
+                    sql = """
+                    SELECT  OeuvreMusicale.titre
+                    FROM OeuvreMusicale
+                    LEFT JOIN PopularitéOeuvre
+                    ON OeuvreMusicale.titre = PopularitéOeuvre.titre
+                    WHERE PopularitéOeuvre.titre IS NULL 
+                    AND Livre.genre = '{0}'
+                    GROUP BY  OeuvreMusicale.titre;
+                    """.format(genre)
+                    oeuvres_populaires = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
+                    print(oeuvres_populaires)
                 elif choice == 'q':
-                    print('\nGoodbye\n')
+                    print('\nAu revoir\n')
                     return
                 else:
-                    print('Input invalid, wrong input: ' + choice)
+                    print('Valeur invalide : ' + choice)
 
 
 class User:

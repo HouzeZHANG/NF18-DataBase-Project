@@ -168,7 +168,7 @@ class Program:
             self.user.uname, self.user.token = None, None
             return False
         else:
-            print("Bienvenue " + self.user.token.value + ": " + user_info_list[0][2])
+            print("Bienvenue " + self.user.token.value + ": " + user_info_list[0][1])
             return True
 
     def loop(self):

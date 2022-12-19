@@ -211,9 +211,33 @@ class Program:
                     res_print(livres)
                     
                 elif choice == '2':
-                    pass
+                    sql = """
+                    SELECT Adhérent,Exemplaire,Retard,DateDeFin,DateDuJour
+                    FROM FinRetard f
+                    JOIN Retard r
+                    ON r.id=f.Retard
+                    WHERE r.personnel='{0}';
+                    """.format(self.user.uname)
+                    retards = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
+                    print("\n---Affichage des retards que vous gérez---")
+                    res_print(retards)
+
+                elif choice == '3':
+                    id_retard = input('Entrez l"id du retard auquel vous souhaitez mettre fin :')
+
+                    sql = """
+                    UPDATE Retard
+                    SET fin = '1'
+                    WHERE Retard.id = {0};
+                    """.format(id_retard)
+                    maj_retard = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
+                    print("\n---Mis à jour des retards---")
+                    res_print(maj_retard)
+
                 elif choice == 'q':
+                    print('\nAu revoir\n')
                     return
+                    
                 else:
                     print('Choix invalide : ' + choice)
 

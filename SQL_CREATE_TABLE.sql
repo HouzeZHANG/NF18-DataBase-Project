@@ -59,3 +59,15 @@ CREATE TABLE Realiser( contrib_nom VARCHAR(100), contrib_prenom VARCHAR(100), co
 CREATE TABLE Acteur( contrib_nom VARCHAR(100), contrib_prenom VARCHAR(100), code VARCHAR(100) REFERENCES Film (code), FOREIGN KEY (contrib_nom, contrib_prenom) REFERENCES Contributeur(nom, prenom), PRIMARY KEY(contrib_nom, contrib_prenom, code) );
 
 CREATE TABLE Auteur( contrib_nom VARCHAR(100), contrib_prenom VARCHAR(100), code VARCHAR(100) REFERENCES Livre (code), FOREIGN KEY (contrib_nom, contrib_prenom) REFERENCES Contributeur(nom, prenom), PRIMARY KEY(contrib_nom, contrib_prenom, code) );
+
+--création de vues
+CREATE VIEW FinRetard AS
+SELECT  Adherent.login                                                  AS Adhérent
+       ,Emprunt.exemplaire                                              AS Exemplaire
+       ,Emprunt.retard                                                  AS Retard
+       ,Emprunt.date_rendu + (Emprunt.date_rendu - Emprunt.date_retour) AS DateDeFin
+       ,DATE(NOW())                                                     AS DateDuJour
+FROM Emprunt
+JOIN Adherent
+ON Emprunt.adherent = Adherent.login
+WHERE retard = 1; 

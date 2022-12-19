@@ -70,4 +70,4 @@ SELECT  Adherent.login                                                  AS Adhé
 FROM Emprunt
 JOIN Adherent
 ON Emprunt.adherent = Adherent.login
-WHERE retard = 1; 
+WHERE Emprunt.retard IS NOT NULL;

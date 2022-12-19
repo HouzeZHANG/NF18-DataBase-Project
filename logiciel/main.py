@@ -66,6 +66,18 @@ def sql_execute(sql, conn, sql_type: SqlType, error_message=None) -> list:
         else:
             print('ERROR: ' + str(error.__class__))
 
+def res_print(ls: list):
+    print("\n---SQL result: ---\n")
+    if not ls:
+        print("0 rows founded")
+    else:
+        for r in ls:
+            s = ""
+            for item in r:
+                s = s + ("\t" + str(item))
+            print(" -> " + s)
+    print("-" * 18 + "\n")
+
 
 class Program:
     """_summary_
@@ -151,12 +163,10 @@ class Program:
         user_info_list = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
         if not user_info_list:
             print("username or password not correct, please try again")
-            self.user.uname = None
-            self.user.token = None
+            self.user.uname, self.user.token = None, None
             return False
         elif len(user_info_list) > 1:
-            self.user.uname = None
-            self.user.token = None
+            self.user.uname, self.user.token = None, None
             return False
         else:
             print("Welcome " + self.user.token.value + ": " + user_info_list[0][2])
@@ -175,7 +185,10 @@ class Program:
                 if choice == '1':
                     sql = """select * from Livre;"""
                     livres = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
-                    print(livres)
+                    print("\n---Livres dans le biblo---")
+                    res_print(livres)
+                elif choice == '2':
+                    pass
                 elif choice == 'q':
                     return
                 else:
@@ -185,6 +198,7 @@ class Program:
                 # TODO menu for adherent user
                 print('Welcome adherent...')
                 print('Enter 1 for <Affichage des Emprunts des Adhérents (exemple : "apple")>')
+                print('Enter 2 for <Affichage des livres>')
                 print('Enter q to quit')
 
                 choice = input('# ')
@@ -199,7 +213,8 @@ class Program:
                     WHERE Emprunt.adherent = '{0}';
                     """.format(self.user.uname)
                     empruntes_of_film = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
-                    print(empruntes_of_film)
+                    print("\n---Empruntes de films---")
+                    res_print(empruntes_of_film)
                     
                     sql = """
                     SELECT  OeuvreMusicale.titre, Emprunt.date_pret, Emprunt.date_retour
@@ -211,7 +226,8 @@ class Program:
                     WHERE Emprunt.adherent = '{0}';
                     """.format(self.user.uname)
                     emprunt_of_music = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
-                    print(emprunt_of_music)
+                    print("\n---Empruntes de musical---")
+                    res_print(emprunt_of_music)
                     
                     sql = """
                     SELECT  Livre.titre, Emprunt.date_pret, Emprunt.date_retour
@@ -220,16 +236,18 @@ class Program:
                     ON Emprunt.exemplaire = Exemplaire.id
                     JOIN Livre
                     ON Livre.code = Exemplaire.code_livre
-                    WHERE Emprunt.adherent = '{0}';;
+                    WHERE Emprunt.adherent = '{0}';
                     """.format(self.user.uname)
                     emprunt_of_livre = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
-                    print(emprunt_of_livre)
+                    print("\n---Empruntes de livres---")
+                    res_print(emprunt_of_livre)
                     
                 elif choice == 'q':
                     return
-                elif choice == '3':
-                    # TODO
-                    pass
+                elif choice == '2':
+                    sql = """select * from Livre;"""
+                    livres = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
+                    print(livres)
                 elif choice == '4':
                     # TODO
                     pass

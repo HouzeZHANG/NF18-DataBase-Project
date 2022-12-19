@@ -29,6 +29,7 @@ class SqlType(Enum):
     """
     DML = 'dml'
     DQL = 'dql'
+    DDL = 'ddl'
 
 
 def sql_execute(sql, conn, sql_type: SqlType, error_message=None) -> list:
@@ -55,6 +56,8 @@ def sql_execute(sql, conn, sql_type: SqlType, error_message=None) -> list:
             return res
         elif sql_type is SqlType.DML:
             cur.commit()
+            return []
+        elif sql_type is SqlType.DDL:
             return []
     except (Exception, psycopg2.DatabaseError) as error:
         print('\n\nSQL_ERROR:\n' + sql)
@@ -97,7 +100,6 @@ class Program:
             pass
         
         self.loop()
-        print('Au revoir...')
 
     def connect_to_db(self):
         try:
@@ -328,7 +330,7 @@ class Program:
                         print("\n---Oeuvres corespondantes à la recherche---")
                         res_print(oeuvre)
 
-                    elif t == 'film' :
+                    elif t == 'film':
                         sql = """
                         SELECT  Film.titre,Acteur.contrib_nom AS Nom,Acteur.contrib_prenom AS Prénom,COUNT(Exemplaire.id)  AS NbExemplaires
                         FROM Acteur
@@ -345,7 +347,7 @@ class Program:
                         print("\n---Films correspondants à la recherche---")
                         res_print(film)
 
-                    elif t == 'livre' :
+                    elif t == 'livre':
                         sql = """
                         SELECT  Livre.titre,Auteur.contrib_nom AS Nom,Auteur.contrib_prenom AS Prénom,COUNT(Exemplaire.id)  AS NbExemplaires
                         FROM Auteur
@@ -408,7 +410,7 @@ class Program:
 
                 elif choice == '4':
                     sql = """
-                    CREATE VIEW PopulariteFilm AS 
+                    CREATE OR REPLACE VIEW PopulariteFilm AS 
                     SELECT  Film.titre, Film.genre,COUNT(*) AS Popularite
                     FROM Emprunt
                     JOIN Exemplaire
@@ -419,11 +421,11 @@ class Program:
                     GROUP BY  genre,titre
                     ORDER BY Popularite ASC;
                     """.format(self.user.uname)
-                    genre = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
-                    if not genre :
+                    genre = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DDL)
+                    if not genre:
                         print("Aucune suggestion à vous proposer."
                         "Si vous le souhaitez, il est possibe d'afficher les oeuvres par ordre de popularité.")
-                    else :
+                    else:
                         genre = genre[0][1]
                         sql = """
                         SELECT  Film.titre
@@ -438,9 +440,9 @@ class Program:
                         print("\n---Suggestions de films---")
                         res_print(films_populaires)
                     
-                elif choice == '5' :
+                elif choice == '5':
                     sql = """
-                    CREATE VIEW PopulariteLivre AS 
+                    CREATE OR REPLACE VIEW PopulariteLivre AS 
                     SELECT  Livre.titre, Livre.genre,COUNT(*) AS Popularite
                     FROM Emprunt
                     JOIN Exemplaire
@@ -452,11 +454,11 @@ class Program:
                     ORDER BY Popularite ASC;
                     """.format(self.user.uname)
                     
-                    genre = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
-                    if not genre :
+                    genre = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DDL)
+                    if not genre:
                         print("Aucune suggestion à vous proposer."
                         "Si vous le souhaitez, il est possibe d'afficher les oeuvres par ordre de popularité.")
-                    else :  
+                    else:  
                         genre = genre[0][1]
                         sql = """
                         SELECT  Livre.titre
@@ -471,9 +473,9 @@ class Program:
                         print("\n---Suggestions de livres---")
                         res_print(livres_populaires)
 
-                elif choice == '6' :
+                elif choice == '6':
                     sql = """
-                    CREATE VIEW PopulariteOeuvre AS 
+                    CREATE OR REPLACE VIEW PopulariteOeuvre AS 
                     SELECT  OeuvreMusicale.titre, OeuvreMusicale.genre,COUNT(*) AS Popularite
                     FROM Emprunt
                     JOIN Exemplaire
@@ -485,11 +487,11 @@ class Program:
                     ORDER BY Popularite ASC;
                     """.format(self.user.uname)
                     
-                    genre = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DQL)
-                    if not genre :
+                    genre = sql_execute(sql=sql, conn=self.connection, sql_type=SqlType.DDL)
+                    if not genre:
                         print("Aucune suggestion à vous proposer."
                         "Si vous le souhaitez, il est possibe d'afficher les oeuvres par ordre de popularité.")
-                    else :
+                    else:
                         genre = genre[0][1]
                         sql = """
                         SELECT  OeuvreMusicale.titre

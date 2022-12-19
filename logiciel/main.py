@@ -151,7 +151,7 @@ class Program:
             """.format(self.user.uname, pwd)
         elif self.user.token == Token.MEMBRE:
             sql = """
-            select nom,prenom,date_naissance,code_postal,adresse_rue,ville,adresse_mail,num_tel,actif,droit_emprunt 
+            select nom,prenom,code_postal,adresse_rue,ville,adresse_mail, 
             from membrepersonnel
             where login = '{0}' and mdp = '{1}'
             """.format(self.user.uname, pwd)

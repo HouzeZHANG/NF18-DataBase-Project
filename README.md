@@ -38,6 +38,7 @@ psql -U [username] -d [testdb] -a -f SQL_CREATE_TABLE.sql
 psql -U [username] -d [testdb] -a -f SQL_INSERT.sql
 ```
 5. Configurer les paramètres dans [db_config.ini](.\logiciel\conf\db_config.ini)
+
 ![params of connection](doc/img/params.png)
 6. Lancer [main.py](logiciel/main.py) dans le terminal
 ```cmd

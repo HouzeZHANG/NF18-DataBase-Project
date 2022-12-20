@@ -19,7 +19,7 @@ Ce projet est implémenté en [psycopg2](https://github.com/fuergaosi233/wechat-
 ## 0. Contenu de la base de données <!-- omit in toc -->
 
 - [Project NF18 2022 Biblio](#project-nf18-2022-biblio)
-  - [1. Comment utiliser la base de données dans une application Python ?](#1-how-to-deploy-this-python-application)
+  - [1. Comment utiliser la base de données dans une application Python ?](#1-comment-utiliser-la-base-de-données-dans-une-application-python-)
 
 ## 1. Comment utiliser la base de données dans une application Python ?
 
@@ -37,7 +37,7 @@ git clone git@gitlab.utc.fr:cjossera/nf18-td1_g5.git
 psql -U [username] -d [testdb] -a -f SQL_CREATE_TABLE.sql
 psql -U [username] -d [testdb] -a -f SQL_INSERT.sql
 ```
-5. Configurer les paramètres dans [main.py](logiciel/main.py)
+5. Configurer les paramètres dans [db_config.ini](.\logiciel\conf\db_config.ini)
 ![params of connection](doc/img/params.png)
 6. Lancer [main.py](logiciel/main.py) dans le terminal
 ```cmd

@@ -7,6 +7,9 @@ Subject: library management system
 import psycopg2
 from enum import Enum
 import maskpass
+import configparser as cp
+import os
+
 
 class Token(Enum):
     """
@@ -102,16 +105,26 @@ class Program:
         
         self.loop()
 
-    def connect_to_db(self):
+    def connect_to_db(self) -> bool:
+        try:
+            os.chdir(".\\logiciel")
+            database_config = cp.ConfigParser()
+            database_config.read(".\\conf\\db_config.ini")
+        except IOError as e:
+            print(e.__str__)
+            print("Database configuration file IO error")
+            return False
+        
         try:
             print("Connection à postgresql...")
             
             # you should change the target database name, username and password
-            self.connection = psycopg2.connect(database='nf18',
-                                               user='postgres',
-                                               password='123456',
-                                               host='localhost',
-                                               port='5432')
+            section = 'DEFAULT'
+            self.connection = psycopg2.connect(database=database_config[section]['database'],
+                                               user=database_config[section]['user'],
+                                               password=database_config[section]['password'],
+                                               host=database_config[section]['host_ip'],
+                                               port=database_config[section]['port'])
             cur = self.connection.cursor()
             print('Postgresql version: ')
             cur.execute('select version()')

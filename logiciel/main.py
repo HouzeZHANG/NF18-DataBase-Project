@@ -6,6 +6,7 @@ Subject: library management system
 
 import psycopg2
 from enum import Enum
+import maskpass
 
 class Token(Enum):
     """
@@ -144,7 +145,7 @@ class Program:
                 
         pwd, sql = '', ''
         while pwd == '':
-            pwd = input('Mot de passe : ')
+            pwd = maskpass.askpass('Mot de passe : ')
         if self.user.token == Token.ADHERENT:
             sql = """
             select nom,prenom,date_naissance,code_postal,adresse_rue,ville,adresse_mail,num_tel,actif,droit_emprunt
